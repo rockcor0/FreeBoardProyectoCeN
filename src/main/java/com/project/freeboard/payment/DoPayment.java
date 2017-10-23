@@ -35,6 +35,7 @@ public class DoPayment extends HttpServlet {
 		String transaction_date = req.getParameter("transaction_date");
 		String payment_method_name = req.getParameter("payment_method_name");
 
+		
 		//Valida si se trata de una operación real
 		boolean validatedPayment = validatedPayment(pay_hash, reference_code, test);
 
