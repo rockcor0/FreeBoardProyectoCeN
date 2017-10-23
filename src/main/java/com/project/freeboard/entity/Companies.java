@@ -1,128 +1,197 @@
 package com.project.freeboard.entity;
-
 import java.io.Serializable;
-
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author nicolas1
+ */
 @Entity
-@Table(name = "companies")
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"email"})})
 @XmlRootElement
-@NamedQueries({ @NamedQuery(name = "Companies.getAll", query = "SELECT c FROM Companies c"),
-		@NamedQuery(name = "Companies.findById", query = "SELECT c FROM Companies c WHERE c.nit = :id"),
-		@NamedQuery(name = "Companies.findByName", query = "SELECT c FROM Companies c WHERE c.name = :name")})
+@NamedQueries({
+    @NamedQuery(name = "Companies.findAll", query = "SELECT c FROM Companies c")
+    , @NamedQuery(name = "Companies.findByEmail", query = "SELECT c FROM Companies c WHERE c.email = :email")
+    , @NamedQuery(name = "Companies.findByName", query = "SELECT c FROM Companies c WHERE c.name = :name")
+    , @NamedQuery(name = "Companies.findByPhone", query = "SELECT c FROM Companies c WHERE c.phone = :phone")
+    , @NamedQuery(name = "Companies.findByAddress", query = "SELECT c FROM Companies c WHERE c.address = :address")
+    , @NamedQuery(name = "Companies.findByPassword", query = "SELECT c FROM Companies c WHERE c.password = :password")
+    , @NamedQuery(name = "Companies.findByContactPerson", query = "SELECT c FROM Companies c WHERE c.contactPerson = :contactPerson")
+    , @NamedQuery(name = "Companies.findByHash", query = "SELECT c FROM Companies c WHERE c.hash = :hash")
+    , @NamedQuery(name = "Companies.findByCreated", query = "SELECT c FROM Companies c WHERE c.created = :created")
+    , @NamedQuery(name = "Companies.findByUpdated", query = "SELECT c FROM Companies c WHERE c.updated = :updated")})
 public class Companies implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String email;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String name;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String phone;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String address;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String password;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String contactPerson;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 32)
+    private String hash;
+    @Basic(optional = false)
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companiesId")
+    private List<Auctions> auctionsList;
 
-	@Id
-	@Basic(optional = false)
-	@Column(name = "nit")
-	private String nit;
+    public Companies() {
+    }
 
-	@Basic(optional = false)
-	@Column(name = "name")
-	private String name;
+    public Companies(String email) {
+        this.email = email;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "phone")
-	private String phone;
+    public Companies(String email, String name, String phone, String address, String password, String contactPerson, String hash, Date created) {
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.password = password;
+        this.contactPerson = contactPerson;
+        this.hash = hash;
+        this.created = created;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "address")
-	private String address;
+    public String getEmail() {
+        return email;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "mail")
-	private String mail;
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "password")
-	private String password;
+    public String getName() {
+        return name;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "contactPerson")
-	private String contactPerson;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Companies() {
-		super();
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public Companies(String nit, String name, String phone, String address, String mail, String password,
-			String contactPerson) {
-		super();
-		this.nit = nit;
-		this.name = name;
-		this.phone = phone;
-		this.address = address;
-		this.mail = mail;
-		this.password = password;
-		this.contactPerson = contactPerson;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public String getNit() {
-		return nit;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setNit(String nit) {
-		this.nit = nit;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getContactPerson() {
+        return contactPerson;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getHash() {
+        return hash;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
 
-	public String getMail() {
-		return mail;
-	}
+    public Date getCreated() {
+        return created;
+    }
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public Date getUpdated() {
+        return updated;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
 
-	public String getContactPerson() {
-		return contactPerson;
-	}
+    @XmlTransient
+    public List<Auctions> getAuctionsList() {
+        return auctionsList;
+    }
 
-	public void setContactPerson(String contactPerson) {
-		this.contactPerson = contactPerson;
-	}
+    public void setAuctionsList(List<Auctions> auctionsList) {
+        this.auctionsList = auctionsList;
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (email != null ? email.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Companies)) {
+            return false;
+        }
+        Companies other = (Companies) object;
+        if ((this.email == null && other.email != null) || (this.email != null && !this.email.equals(other.email))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "beansexample.Companies[ email=" + email + " ]";
+    }
+    
 }
