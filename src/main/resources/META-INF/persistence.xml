@@ -6,10 +6,10 @@
 
 	
 	<persistence-unit name="freeboard">
-		<class>com.project.freeboard.entity.Student</class>
-		<class>com.project.freeboard.entity.Company</class>
-		<class>com.project.freeboard.entity.Auction</class>
-		<class>com.project.freeboard.entity.Offer</class>
+		<class>com.project.freeboard.entity.Students</class>
+		<class>com.project.freeboard.entity.Companies</class>
+		<class>com.project.freeboard.entity.Auctions</class>
+		<class>com.project.freeboard.entity.Offers</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

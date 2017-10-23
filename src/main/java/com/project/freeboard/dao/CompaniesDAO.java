@@ -18,7 +18,7 @@ public class CompaniesDAO {
 		em = PersistenceManager.get().createEntityManager();
 	}
 
-	public boolean addEquipo(Companies e) {
+	public boolean addCompany(Companies e) {
 		// Check for already exists
 		try {
 			em.getTransaction().begin();
@@ -31,10 +31,10 @@ public class CompaniesDAO {
 		}
 	}
 
-	public boolean updateCompanie(Companies e) {
+	public boolean updateCompanie(Companies c) {
 		try {
 			em.getTransaction().begin();
-			em.merge(e); // cascades the tool & skill relationships
+			em.merge(c); // cascades the tool & skill relationships
 			em.flush();
 			em.getTransaction().commit();
 			em.close();
@@ -61,7 +61,7 @@ public class CompaniesDAO {
 	public List<Companies> getCompanies() {
 		List<Companies> equipos = null;
 		em.getTransaction().begin();
-		TypedQuery<Companies> q = em.createNamedQuery("Equipo.getAll", Companies.class);
+		TypedQuery<Companies> q = em.createNamedQuery("Companies.getAll", Companies.class);
 		try {
 			equipos = q.getResultList();
 		} catch (NoResultException e) {
@@ -85,7 +85,10 @@ public class CompaniesDAO {
 	public Companies getCompanieByName(String name) {
 
 		em.getTransaction().begin();
-		Companies companie = em.find(Companies.class, name);
+		Companies companie = null;
+		TypedQuery<Companies> query = em.createNamedQuery("Companies.findByName", Companies.class);
+		query.setParameter("name", name);
+		companie=query.getSingleResult();
 		em.flush();
 		em.getTransaction().commit();
 		return companie;

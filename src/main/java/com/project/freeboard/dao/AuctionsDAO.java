@@ -61,7 +61,7 @@ public class AuctionsDAO {
 	public List<Auctions> getAuctions() {
 		List<Auctions> equipos = null;
 		em.getTransaction().begin();
-		TypedQuery<Auctions> q = em.createNamedQuery("Equipo.getAll", Auctions.class);
+		TypedQuery<Auctions> q = em.createNamedQuery("Auctions.getAll", Auctions.class);
 		try {
 			equipos = q.getResultList();
 		} catch (NoResultException e) {
@@ -81,26 +81,38 @@ public class AuctionsDAO {
 		em.getTransaction().commit();
 		return auction;
 	}
+
 	public Auctions getAuctionsByType(String type) {
 
 		em.getTransaction().begin();
-		Auctions auction = em.find(Auctions.class, type);
+		Auctions auction = null;
+		TypedQuery<Auctions> query = em.createNamedQuery("Auctions.findByType", Auctions.class);
+		query.setParameter("type", type);
+		auction = query.getSingleResult();
 		em.flush();
 		em.getTransaction().commit();
 		return auction;
 	}
+
 	public Auctions getAuctionsByTime(String time) {
 
 		em.getTransaction().begin();
-		Auctions auction = em.find(Auctions.class, time);
+		Auctions auction = null;
+		TypedQuery<Auctions> query = em.createNamedQuery("Auctions.findByTime", Auctions.class);
+		query.setParameter("time", time);
+		auction = query.getSingleResult();
 		em.flush();
 		em.getTransaction().commit();
 		return auction;
 	}
+
 	public Auctions getAuctionsByPrice(String price) {
 
 		em.getTransaction().begin();
-		Auctions auction = em.find(Auctions.class, price);
+		Auctions auction = null;
+		TypedQuery<Auctions> query = em.createNamedQuery("Auctions.findByPrice", Auctions.class);
+		query.setParameter("price", price);
+		auction = query.getSingleResult();
 		em.flush();
 		em.getTransaction().commit();
 		return auction;

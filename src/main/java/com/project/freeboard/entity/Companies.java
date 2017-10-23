@@ -6,12 +6,18 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name="companies")
-
-public class Companies implements Serializable{
+@Table(name = "companies")
+@XmlRootElement
+@NamedQueries({ @NamedQuery(name = "Companies.getAll", query = "SELECT c FROM Companies c"),
+		@NamedQuery(name = "Companies.findById", query = "SELECT c FROM Companies c WHERE c.nit = :id"),
+		@NamedQuery(name = "Companies.findByName", query = "SELECT c FROM Companies c WHERE c.name = :name")})
+public class Companies implements Serializable {
 
 	/**
 	 * 
@@ -22,31 +28,35 @@ public class Companies implements Serializable{
 	@Basic(optional = false)
 	@Column(name = "nit")
 	private String nit;
-	
+
 	@Basic(optional = false)
 	@Column(name = "name")
 	private String name;
-	
+
 	@Basic(optional = false)
 	@Column(name = "phone")
 	private String phone;
-	
+
 	@Basic(optional = false)
 	@Column(name = "address")
 	private String address;
-	
+
 	@Basic(optional = false)
 	@Column(name = "mail")
 	private String mail;
-	
+
 	@Basic(optional = false)
 	@Column(name = "password")
 	private String password;
-	
+
 	@Basic(optional = false)
 	@Column(name = "contactPerson")
 	private String contactPerson;
-	
+
+	public Companies() {
+		super();
+	}
+
 	public Companies(String nit, String name, String phone, String address, String mail, String password,
 			String contactPerson) {
 		super();
@@ -58,48 +68,61 @@ public class Companies implements Serializable{
 		this.password = password;
 		this.contactPerson = contactPerson;
 	}
+
 	public String getNit() {
 		return nit;
 	}
+
 	public void setNit(String nit) {
 		this.nit = nit;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	public String getMail() {
 		return mail;
 	}
+
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getContactPerson() {
 		return contactPerson;
 	}
+
 	public void setContactPerson(String contactPerson) {
 		this.contactPerson = contactPerson;
 	}
-	
-	
+
 }

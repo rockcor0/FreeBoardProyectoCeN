@@ -6,11 +6,18 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name="companies")
-public class Offers implements Serializable{
+@Table(name = "offers")
+@XmlRootElement
+@NamedQueries({ @NamedQuery(name = "Offers.getAll", query = "SELECT o FROM Offers o"),
+		@NamedQuery(name = "Offers.getOffersByStudent", query = "SELECT o FROM Offers o WHERE o.students_cc = :students_cc"),
+		@NamedQuery(name = "Offers.getOffersByAuction", query = "SELECT o FROM Offers o WHERE o.auctions_idauctions = :auctions_idauctions") })
+public class Offers implements Serializable {
 
 	/**
 	 * 
@@ -21,18 +28,23 @@ public class Offers implements Serializable{
 	@Basic(optional = false)
 	@Column(name = "idoffers")
 	private int idoffers;
-	
+
 	@Basic(optional = false)
 	@Column(name = "price")
 	private String price;
-	
+
 	@Basic(optional = false)
 	@Column(name = "students_cc")
 	private String students_cc;
-	
+
 	@Basic(optional = false)
 	@Column(name = "auctions_idauctions")
 	private int auctions_idauctions;
+
+	public Offers() {
+		super();
+	}
+
 	public Offers(int idoffers, String price, String students_cc, int auctions_idauctions) {
 		super();
 		this.idoffers = idoffers;
@@ -40,30 +52,39 @@ public class Offers implements Serializable{
 		this.students_cc = students_cc;
 		this.auctions_idauctions = auctions_idauctions;
 	}
+
 	public int getIdoffers() {
 		return idoffers;
 	}
+
 	public void setIdoffers(int idoffers) {
 		this.idoffers = idoffers;
 	}
+
 	public String getPrice() {
 		return price;
 	}
+
 	public void setPrice(String price) {
 		this.price = price;
 	}
+
 	public String getStudents_cc() {
 		return students_cc;
 	}
+
 	public void setStudents_cc(String students_cc) {
 		this.students_cc = students_cc;
 	}
+
 	public int getAuctions_idauctions() {
 		return auctions_idauctions;
 	}
+
 	public void setAuctions_idauctions(int auctions_idauctions) {
 		this.auctions_idauctions = auctions_idauctions;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -88,8 +109,8 @@ public class Offers implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Offer [idOffers=" + idoffers + ", price=" + price + ", students_cc=" + students_cc + ", auctions_idauctions="
-				+ auctions_idauctions + "]";
+		return "Offer [idOffers=" + idoffers + ", price=" + price + ", students_cc=" + students_cc
+				+ ", auctions_idauctions=" + auctions_idauctions + "]";
 	}
-	
+
 }

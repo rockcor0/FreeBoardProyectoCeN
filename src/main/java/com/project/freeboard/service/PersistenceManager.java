@@ -20,7 +20,7 @@ public final class PersistenceManager {
 
     private static Map<String, String> getEntityManagerProperties()
     {
-        Map<String, String> properties = new HashMap();
+        Map<String, String> properties = new HashMap<String, String>();
         if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
             properties.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.GoogleDriver");
             properties.put("javax.persistence.jdbc.url", System.getProperty("cloudsql.url"));

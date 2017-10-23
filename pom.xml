@@ -4,7 +4,7 @@
 	<groupId>com.project.freeboard</groupId>
 	<artifactId>freeboard</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>freeboard Maven Webapp</name>
 
 	<properties>
@@ -26,7 +26,7 @@
 		<modelmapper.version>1.0.0</modelmapper.version>
 		<hibernate.version>5.2.11.Final</hibernate.version>
 
-		<cloudsql.url>jdbc:google:mysql://cloud-computing-freeboard:us-central1:db-freeboard/db-freeboard</cloudsql.url>
+		<cloudsql.url>jdbc:google:mysql://cloud-computing-freeboard:us-central1:db-freeboard/db-freeboard?zeroDateTimeBehavior=convertToNull</cloudsql.url>
 		<cloudsql.url.dev>jdbc:mysql://localhost/freeboard</cloudsql.url.dev>
 
 	</properties>
@@ -216,7 +216,7 @@
 				<version>4.0.5</version>
 				<configuration>
 					<api>JPA</api>
-					<persistenceUnitName>ligaguila</persistenceUnitName>
+					<persistenceUnitName>freeboard</persistenceUnitName>
 					<log4jConfiguration>${basedir}/src/main/resources/log4j.properties</log4jConfiguration>
 					<verbose>true</verbose>
 				</configuration>

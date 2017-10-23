@@ -1,4 +1,5 @@
 package com.project.freeboard.dao;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class OffersDAO {
 		}
 	}
 
-	public boolean removeOffers(Offers id) {
+	public boolean removeOffers(String id) {
 		try {
 			Offers Offers = em.find(Offers.class, id);
 			em.getTransaction().begin();
@@ -57,7 +58,7 @@ public class OffersDAO {
 		}
 	}
 
-	public List<Offers> getOfferss() {
+	public List<Offers> getOffers() {
 		List<Offers> Offerss = null;
 		em.getTransaction().begin();
 		TypedQuery<Offers> q = em.createNamedQuery("Offers.getAll", Offers.class);
@@ -71,12 +72,12 @@ public class OffersDAO {
 		em.getTransaction().commit();
 		return Offerss;
 	}
-	
+
 	public List<Offers> getOfferssByStudent(String id) {
 		List<Offers> Offerss = null;
 		em.getTransaction().begin();
-		TypedQuery<Offers> q = em.createNamedQuery("Offers.getOfferssByStudent", Offers.class);
-		q.setParameter("id",id);
+		TypedQuery<Offers> q = em.createNamedQuery("Offers.getOffersByStudent", Offers.class);
+		q.setParameter("students_cc", id);
 		try {
 			Offerss = q.getResultList();
 		} catch (NoResultException e) {
@@ -91,8 +92,8 @@ public class OffersDAO {
 	public List<Offers> getOfferssByAuction(String id) {
 		List<Offers> Offerss = null;
 		em.getTransaction().begin();
-		TypedQuery<Offers> q = em.createNamedQuery("Offers.getOfferssByAuction", Offers.class);
-		q.setParameter("id",id);
+		TypedQuery<Offers> q = em.createNamedQuery("Offers.getOffersByAuction", Offers.class);
+		q.setParameter("auctions_idauctions", id);
 		try {
 			Offerss = q.getResultList();
 		} catch (NoResultException e) {
@@ -112,5 +113,5 @@ public class OffersDAO {
 		em.getTransaction().commit();
 		return Offers;
 	}
-	
+
 }
