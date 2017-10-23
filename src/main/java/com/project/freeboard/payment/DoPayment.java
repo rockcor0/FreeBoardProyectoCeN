@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.project.freeboard.entity.Transactions;
 
-
+//Modulo para validar y registrar pagos
 public class DoPayment extends HttpServlet {
 	
 	private Transactions t;
