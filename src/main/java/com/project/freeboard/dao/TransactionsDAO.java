@@ -6,19 +6,18 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-
-import com.project.freeboard.entity.Payment;
+import com.project.freeboard.entity.Transactions;
 import com.project.freeboard.service.PersistenceManager;
 
-public class PaymentDAO {
+public class TransactionsDAO {
 	
 	private EntityManager em;
 	
-	public PaymentDAO() {
+	public TransactionsDAO() {
 		em = PersistenceManager.get().createEntityManager();
 	}
 	
-	public boolean addPayment(Payment p) {
+	public boolean addTransactions(Transactions p) {
 		
 		try {
 			em.getTransaction().begin();
@@ -31,7 +30,7 @@ public class PaymentDAO {
 		}
 	}
 	
-	public boolean updatePayment(Payment p) {
+	public boolean updateTransactions(Transactions p) {
 		try {
 			em.getTransaction().begin();
 			em.merge(p); // cascades the tool & skill relationships
@@ -44,11 +43,11 @@ public class PaymentDAO {
 		}
 	}
 
-	public boolean removePayment(String id) {
+	public boolean removeTransactions(String id) {
 		try {
-			Payment payment = em.find(Payment.class, id);
+			Transactions Transactions = em.find(Transactions.class, id);
 			em.getTransaction().begin();
-			em.remove(payment);
+			em.remove(Transactions);
 			em.flush();
 			em.getTransaction().commit();
 			return true;
@@ -58,34 +57,43 @@ public class PaymentDAO {
 		}
 	}
 
-	public List<Payment> getPayment() {
-		List<Payment> payment = null;
+	public List<Transactions> getTransactions() {
+		List<Transactions> Transactions = null;
 		em.getTransaction().begin();
-		TypedQuery<Payment> p = em.createNamedQuery("Equipo.getAll", Payment.class);
+		TypedQuery<Transactions> p = em.createNamedQuery("Equipo.getAll", Transactions.class);
 		try {
-			payment = p.getResultList();
+			Transactions = p.getResultList();
 		} catch (NoResultException e) {
-			payment = new ArrayList<Payment>();
+			Transactions = new ArrayList<Transactions>();
 		}
 
 		em.flush();
 		em.getTransaction().commit();
-		return payment;
+		return Transactions;
 	}
 
-	public Payment getPaymentById(String id) {
+	public Transactions getTransactionsById(String id) {
 
 		em.getTransaction().begin();
-		Payment companie = em.find(Payment.class, id);
+		Transactions companie = em.find(Transactions.class, id);
 		em.flush();
 		em.getTransaction().commit();
 		return companie;
 	}
 	
-	public Payment getPaymentByBuyerEmail(String buyerEmail) {
+	public Transactions getTransactionsByBuyerEmail(String buyerEmail) {
 
 		em.getTransaction().begin();
-		Payment payment = em.find(Payment.class, buyerEmail);
+		Transactions Transactions = em.find(Transactions.class, buyerEmail);
+		em.flush();
+		em.getTransaction().commit();
+		return Transactions;
+	}
+	
+	public Transactions getPaymentByHashCode(String payHash) {
+
+		em.getTransaction().begin();
+		Transactions payment = em.find(Transactions.class, payHash);
 		em.flush();
 		em.getTransaction().commit();
 		return payment;
