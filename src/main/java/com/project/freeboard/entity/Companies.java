@@ -46,6 +46,7 @@ public class Companies implements Serializable{
 	@Basic(optional = false)
 	@Column(name = "contactPerson")
 	private String contactPerson;
+	
 	public Companies(String nit, String name, String phone, String address, String mail, String password,
 			String contactPerson) {
 		super();
