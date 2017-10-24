@@ -10,6 +10,7 @@
 		<class>com.project.freeboard.entity.Companies</class>
 		<class>com.project.freeboard.entity.Auctions</class>
 		<class>com.project.freeboard.entity.Offers</class>
+		<class>com.project.freeboard.entity.Transactions</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

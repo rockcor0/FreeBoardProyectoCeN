@@ -1,243 +1,271 @@
 package com.project.freeboard.entity;
-
 import java.io.Serializable;
-
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author nicolas1
+ */
 @Entity
-@Table(name = "students")
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"email"})})
 @XmlRootElement
-@NamedQueries({ @NamedQuery(name = "Students.getAll", query = "SELECT s FROM Students s"),
-		@NamedQuery(name = "Students.findById", query = "SELECT s FROM Students s WHERE s.cc = :id") })
+@NamedQueries({
+    @NamedQuery(name = "Students.findAll", query = "SELECT s FROM Students s")
+    , @NamedQuery(name = "Students.findByEmail", query = "SELECT s FROM Students s WHERE s.email = :email")
+    , @NamedQuery(name = "Students.findByName", query = "SELECT s FROM Students s WHERE s.name = :name")
+    , @NamedQuery(name = "Students.findByLastname", query = "SELECT s FROM Students s WHERE s.lastname = :lastname")
+    , @NamedQuery(name = "Students.findByPassword", query = "SELECT s FROM Students s WHERE s.password = :password")
+    , @NamedQuery(name = "Students.findByUniversity", query = "SELECT s FROM Students s WHERE s.university = :university")
+    , @NamedQuery(name = "Students.findByPhone", query = "SELECT s FROM Students s WHERE s.phone = :phone")
+    , @NamedQuery(name = "Students.findByBankWire", query = "SELECT s FROM Students s WHERE s.bankWire = :bankWire")
+    , @NamedQuery(name = "Students.findByBank", query = "SELECT s FROM Students s WHERE s.bank = :bank")
+    , @NamedQuery(name = "Students.findByAccountType", query = "SELECT s FROM Students s WHERE s.accountType = :accountType")
+    , @NamedQuery(name = "Students.findByAccountOwner", query = "SELECT s FROM Students s WHERE s.accountOwner = :accountOwner")
+    , @NamedQuery(name = "Students.findByExperience", query = "SELECT s FROM Students s WHERE s.experience = :experience")
+    , @NamedQuery(name = "Students.findBySkills", query = "SELECT s FROM Students s WHERE s.skills = :skills")
+    , @NamedQuery(name = "Students.findByHash", query = "SELECT s FROM Students s WHERE s.hash = :hash")
+    , @NamedQuery(name = "Students.findByCreated", query = "SELECT s FROM Students s WHERE s.created = :created")
+    , @NamedQuery(name = "Students.findByUpdated", query = "SELECT s FROM Students s WHERE s.updated = :updated")})
 public class Students implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String email;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String name;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String lastname;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String password;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String university;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String phone;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String bankWire;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String bank;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String accountType;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 45)
+    private String accountOwner;
+    @Column(length = 200)
+    private String experience;
+    @Column(length = 200)
+    private String skills;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 32)
+    private String hash;
+    @Basic(optional = false)
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentsId")
+    private List<Offers> offersList;
 
-	@Id
-	@Basic(optional = false)
-	@Column(name = "cc")
-	private String cc;
+    public Students(String cc, String name2, String email2, String phone2, String bankWire2, String bank2, String accountType2, String university2, String career, String titular, String experiencia, String skills2, String password2) {
+    }
 
-	@Basic(optional = false)
-	@Column(name = "name")
-	private String name;
+    public Students(String email) {
+        this.email = email;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "email")
-	private String email;
+    public Students(String email, String name, String lastname, String password, String university, String phone, String bankWire, String bank, String accountType, String accountOwner, String hash, Date created) {
+        this.email = email;
+        this.name = name;
+        this.lastname = lastname;
+        this.password = password;
+        this.university = university;
+        this.phone = phone;
+        this.bankWire = bankWire;
+        this.bank = bank;
+        this.accountType = accountType;
+        this.accountOwner = accountOwner;
+        this.hash = hash;
+        this.created = created;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "phone")
-	private String phone;
+    public String getEmail() {
+        return email;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "bankWire")
-	private String bankWire;
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "bank")
-	private String bank;
+    public String getName() {
+        return name;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "accountType")
-	private String accountType;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "university")
-	private String university;
+    public String getLastname() {
+        return lastname;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "career")
-	private String career;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "titular")
-	private String titular;
+    public String getPassword() {
+        return password;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "experiencia")
-	private String experiencia;
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "skills")
-	private String skills;
+    public String getUniversity() {
+        return university;
+    }
 
-	@Basic(optional = false)
-	@Column(name = "password")
-	private String password;
+    public void setUniversity(String university) {
+        this.university = university;
+    }
 
-	public Students() {
-		super();
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public Students(String cc, String name, String email, String phone, String bankWire, String bank,
-			String accountType, String university, String career, String titular, String experiencia, String skills,
-			String password) {
-		super();
-		this.cc = cc;
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
-		this.bankWire = bankWire;
-		this.bank = bank;
-		this.accountType = accountType;
-		this.university = university;
-		this.career = career;
-		this.titular = titular;
-		this.experiencia = experiencia;
-		this.skills = skills;
-		this.password = password;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public String getCc() {
-		return cc;
-	}
+    public String getBankWire() {
+        return bankWire;
+    }
 
-	public void setCc(String cc) {
-		this.cc = cc;
-	}
+    public void setBankWire(String bankWire) {
+        this.bankWire = bankWire;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getBank() {
+        return bank;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getAccountType() {
+        return accountType;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getAccountOwner() {
+        return accountOwner;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setAccountOwner(String accountOwner) {
+        this.accountOwner = accountOwner;
+    }
 
-	public String getBankWire() {
-		return bankWire;
-	}
+    public String getExperience() {
+        return experience;
+    }
 
-	public void setBankWire(String bankWire) {
-		this.bankWire = bankWire;
-	}
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
 
-	public String getBank() {
-		return bank;
-	}
+    public String getSkills() {
+        return skills;
+    }
 
-	public void setBank(String bank) {
-		this.bank = bank;
-	}
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
 
-	public String getAccountType() {
-		return accountType;
-	}
+    public String getHash() {
+        return hash;
+    }
 
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
-	}
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
 
-	public String getUniversity() {
-		return university;
-	}
+    public Date getCreated() {
+        return created;
+    }
 
-	public void setUniversity(String university) {
-		this.university = university;
-	}
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
-	public String getCareer() {
-		return career;
-	}
+    public Date getUpdated() {
+        return updated;
+    }
 
-	public void setCareer(String career) {
-		this.career = career;
-	}
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
 
-	public String getTitular() {
-		return titular;
-	}
+    @XmlTransient
+    public List<Offers> getOffersList() {
+        return offersList;
+    }
 
-	public void setTitular(String titular) {
-		this.titular = titular;
-	}
+    public void setOffersList(List<Offers> offersList) {
+        this.offersList = offersList;
+    }
 
-	public String getExperiencia() {
-		return experiencia;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (email != null ? email.hashCode() : 0);
+        return hash;
+    }
 
-	public void setExperiencia(String experiencia) {
-		this.experiencia = experiencia;
-	}
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Students)) {
+            return false;
+        }
+        Students other = (Students) object;
+        if ((this.email == null && other.email != null) || (this.email != null && !this.email.equals(other.email))) {
+            return false;
+        }
+        return true;
+    }
 
-	public String getSkills() {
-		return skills;
-	}
-
-	public void setSkills(String skills) {
-		this.skills = skills;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cc == null) ? 0 : cc.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Students other = (Students) obj;
-		if (cc == null) {
-			if (other.cc != null)
-				return false;
-		} else if (!cc.equals(other.cc))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Students [cc=" + cc + ", name=" + name + ", email=" + email + ", phone=" + phone + ", bankWire="
-				+ bankWire + ", bank=" + bank + ", accountType=" + accountType + ", university=" + university
-				+ ", career=" + career + ", titular=" + titular + ", experiencia=" + experiencia + ", skills=" + skills
-				+ ", password=" + password + "]";
-	}
-
+    @Override
+    public String toString() {
+        return "beansexample.Students[ email=" + email + " ]";
+    }
+    
 }

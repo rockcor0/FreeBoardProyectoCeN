@@ -16,7 +16,6 @@
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/transaction-api/1.1/transaction-api-1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/xml/bind/jaxb-api/2.2.12-b140109.1041/jaxb-api-2.2.12-b140109.1041.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/datanucleus/datanucleus-core/4.1.11/datanucleus-core-4.1.11.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/datanucleus/datanucleus-api-jpa/4.1.10/datanucleus-api-jpa-4.1.10.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/datanucleus/datanucleus-jpa-query/4.0.5/datanucleus-jpa-query-4.0.5.jar"/>
@@ -70,11 +69,6 @@
 	<classpathentry kind="var" path="M2_REPO/com/jcabi/jcabi-aspects/0.22/jcabi-aspects-0.22.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjrt/1.8.4/aspectjrt-1.8.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/glassfish/jaxb/jaxb-runtime/2.2.11/jaxb-runtime-2.2.11.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/glassfish/jaxb/jaxb-core/2.2.11/jaxb-core-2.2.11.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/glassfish/jaxb/txw2/2.2.11/txw2-2.2.11.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/sun/istack/istack-commons-runtime/2.21/istack-commons-runtime-2.21.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/jvnet/staxex/stax-ex/1.7.7/stax-ex-1.7.7.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/sun/xml/fastinfoset/FastInfoset/1.2.13/FastInfoset-1.2.13.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/google/appengine/appengine-testing/1.9.57/appengine-testing-1.9.57.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/google/appengine/appengine-api-stubs/1.9.57/appengine-api-stubs-1.9.57.jar"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
