@@ -1,6 +1,8 @@
 package com.project.freeboard.payment;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +13,7 @@ import com.project.freeboard.entity.Transactions;
 
 //Modulo para validar y registrar pagos
 public class DoPayment extends HttpServlet {
-	
+
 	private Transactions t;
 
 	@Override
@@ -35,39 +37,82 @@ public class DoPayment extends HttpServlet {
 		String transaction_date = req.getParameter("transaction_date");
 		String payment_method_name = req.getParameter("payment_method_name");
 
-		
-		//Valida si se trata de una operación real
-		boolean validatedPayment = validatedPayment(pay_hash, reference_code, test);
+		t = new Transactions(reference_code);
+
+		// Valida si se trata de una operación real
+		boolean validatedPayment = validatedPayment(pay_hash, test);
 
 		boolean updated = false;
 
-		
-		if (validatedPayment) {
-			updated = updatedModel(reference_code, id_oferta, response_code_pol, state_pol, response_message_pol,
-					payment_method_type, transaction_date, payment_method_name);
-		} else {
-			//Lanzar exception
+		boolean isTransactionApproved = false;
+
+		try {
+			if (validatedPayment) {
+				updated = updatedModel(response_code_pol, state_pol, response_message_pol, payment_method_type,
+						transaction_date, payment_method_name);
+			} else {
+				// Lanzar exception
+			}
+
+			if (updated) {
+
+				isTransactionApproved = isTransactionApproved(state_pol, response_code_pol, response_message_pol);
+
+			} else {
+				// lanzar excepción
+			}
+
+			if (isTransactionApproved) {
+
+				isTransactionApproved = isTransactionApproved(state_pol, response_code_pol, response_message_pol);
+
+			} else {
+				// lanzar excepción
+			}
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		if (updated) {
-
-		} else {
-			//lanzar excepción
-		}
 	}
 
-	private boolean validatedPayment(String pay_hash, String reference_code, String test) {
-		boolean validated = false;
-		
-		return validated;
+	private boolean isTransactionApproved(String state_pol, String response_code_pol, String response_message_pol) {
+
+		if (state_pol.equals(4) && response_code_pol.equals(1) && response_message_pol.equals("APPROVED"))
+			return true;
+
+		else
+			return false;
+
+	}
+	
+	private String checkTransactionStatus(){
+		return null;
 	}
 
-	private boolean updatedModel(String reference_code, String id_oferta, String response_code_pol, String state_pol,
-			String response_message_pol, String payment_method_type, String transaction_date,
-			String payment_method_name) {
-		// TODO Auto-generated method stub
+	private boolean validatedPayment(String pay_hash, String test) {
 
-		return false;
+		String payHash = t.getPayHash();
+
+		return payHash.equals(pay_hash) ? true : false;
+
+	}
+
+	private boolean updatedModel(String response_code_pol, String state_pol, String response_message_pol,
+			String payment_method_type, String transaction_date, String payment_method_name) throws ParseException {
+
+		t.setResponseCodePol(Integer.parseInt(response_code_pol));
+		t.setStatePol(Integer.parseInt(state_pol));
+		t.setResponseMessageCol(response_message_pol);
+		t.setPaymentMethodType(Integer.parseInt(payment_method_name));
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd.MMM.yyyy HH:mm:ss0");
+		t.setTransactionDate(formatter.parse(transaction_date));
+
+		t.setPaymentMethodName(payment_method_name);
+
+		return true;
 	}
 
 	// Se actualiza el modelo

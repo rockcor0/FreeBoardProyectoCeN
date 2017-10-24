@@ -45,6 +45,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Transactions.findByTransactionscol", query = "SELECT t FROM Transactions t WHERE t.transactionscol = :transactionscol")
     , @NamedQuery(name = "Transactions.findByCreated", query = "SELECT t FROM Transactions t WHERE t.created = :created")
     , @NamedQuery(name = "Transactions.findByUpdated", query = "SELECT t FROM Transactions t WHERE t.updated = :updated")})
+
+
 public class Transactions implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -82,9 +84,9 @@ public class Transactions implements Serializable {
     @Column(name = "state_pol")
     private Integer statePol;
     @Column(name = "response_code_pol", length = 255)
-    private String responseCodePol;
+    private Integer responseCodePol;
     @Column(name = "response_message_col")
-    private Integer responseMessageCol;
+    private String responseMessageCol;
     @Column(name = "payment_method_type")
     private Integer paymentMethodType;
     @Column(name = "transaction_date")
@@ -214,19 +216,19 @@ public class Transactions implements Serializable {
         this.statePol = statePol;
     }
 
-    public String getResponseCodePol() {
+    public Integer getResponseCodePol() {
         return responseCodePol;
     }
 
-    public void setResponseCodePol(String responseCodePol) {
+    public void setResponseCodePol(Integer responseCodePol) {
         this.responseCodePol = responseCodePol;
     }
 
-    public Integer getResponseMessageCol() {
+    public String getResponseMessageCol() {
         return responseMessageCol;
     }
 
-    public void setResponseMessageCol(Integer responseMessageCol) {
+    public void setResponseMessageCol(String responseMessageCol) {
         this.responseMessageCol = responseMessageCol;
     }
 
