@@ -14,6 +14,10 @@ import com.project.freeboard.entity.Transactions;
 //Modulo para validar y registrar pagos
 public class DoPayment extends HttpServlet {
 
+	public final static String STATE_POL_APPROVED = "4";
+	public final static String RESPONSE_MESSAGE_POL_APPROVED = "APPROVED";
+	public final static String RESPONSE_CODE_POL_APPROVED = "1";
+
 	private Transactions t;
 
 	@Override
@@ -79,15 +83,16 @@ public class DoPayment extends HttpServlet {
 
 	private boolean isTransactionApproved(String state_pol, String response_code_pol, String response_message_pol) {
 
-		if (state_pol.equals(4) && response_code_pol.equals(1) && response_message_pol.equals("APPROVED"))
+		if (state_pol.equals(STATE_POL_APPROVED) && response_code_pol.equals(RESPONSE_CODE_POL_APPROVED)
+				&& response_message_pol.equals(RESPONSE_MESSAGE_POL_APPROVED))
 			return true;
 
 		else
 			return false;
 
 	}
-	
-	private String checkTransactionStatus(){
+
+	private String checkTransactionStatus() {
 		return null;
 	}
 
