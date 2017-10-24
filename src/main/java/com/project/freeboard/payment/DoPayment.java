@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.project.freeboard.entity.Transactions;
 
-
 //Modulo para validar y registrar pagos
 public class DoPayment extends HttpServlet {
 	
@@ -18,7 +17,6 @@ public class DoPayment extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		
 		String reference_code = req.getParameter("reference_sale"); // idTransaccion
 		String description = req.getParameter("description");
 		String amount = req.getParameter("amount"); // value en la respuesta
@@ -43,6 +41,7 @@ public class DoPayment extends HttpServlet {
 
 		boolean updated = false;
 
+		
 		if (validatedPayment) {
 			updated = updatedModel(reference_code, id_oferta, response_code_pol, state_pol, response_message_pol,
 					payment_method_type, transaction_date, payment_method_name);

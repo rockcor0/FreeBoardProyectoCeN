@@ -92,7 +92,7 @@ public class Students implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentsId")
     private List<Offers> offersList;
 
-    public Students(String cc, String name2, String email2, String phone2, String bankWire2, String bank2, String accountType2, String university2, String career, String titular, String experiencia, String skills2, String password2) {
+    public Students() {
     }
 
     public Students(String email) {

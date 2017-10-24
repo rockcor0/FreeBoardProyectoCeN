@@ -22,8 +22,6 @@ import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.mysql.jdbc.Blob;
-
 /**
  *
  * @author nicolas1
@@ -90,7 +88,7 @@ public class Auctions implements Serializable {
     @ManyToOne(optional = false)
     private Offers winnerOffer;
 
-    public Auctions(int idauctions2, String type2, String size2, String mainColor2, String secundaryColor2, String description2, Date time2, String price2, Blob sketch2) {
+    public Auctions() {
     }
 
     public Auctions(String idauctions) {

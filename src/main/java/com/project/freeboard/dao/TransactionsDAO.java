@@ -89,16 +89,5 @@ public class TransactionsDAO {
 		em.getTransaction().commit();
 		return Transactions;
 	}
-	
-	public Transactions getPaymentByHashCode(String payHash) {
-
-		em.getTransaction().begin();
-		Transactions payment = em.find(Transactions.class, payHash);
-		em.flush();
-		em.getTransaction().commit();
-		return payment;
-	}
 
 }
-
-
