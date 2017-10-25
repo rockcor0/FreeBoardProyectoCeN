@@ -85,8 +85,10 @@ public class DoPayment extends HttpServlet {
 		}
 	}
 
-	
-
+	/**
+	 * Consulta en la base de datos el email de la empresa
+	 * @return
+	 */
 	private String consultBusinessEmail() {
 		Auctions auction = o.getAuctionsIdauctions();
 		Companies company = auction.getCompaniesId();
@@ -94,12 +96,22 @@ public class DoPayment extends HttpServlet {
 		return companyEmail;
 	}
 
+	/**
+	 * Consulta en la base de datos el email del estudiante
+	 * @return
+	 */
 	private String consultStudentEmail() {
 		Students student = o.getStudentsId();
 		String studentEmail = student.getEmail();
 		return studentEmail;
 	}
 
+	/**
+	 * Envía un mensaje de correo electrónico al estudiante para compartir la información de contacto de la empresa.
+	 * @param emailStudent
+	 * @param businessEmail
+	 * @return
+	 */
 	private boolean sendMessageToShareContactWithStudent(String emailStudent, String businessEmail) {
 		scws = new SendEmailMessage();
 		String subject = "";
@@ -129,14 +141,30 @@ public class DoPayment extends HttpServlet {
 		
 	}
 	
+	/**
+	 * Envía un mensaje a la empresa con los datos de contacto del estudiante
+	 * @param emailBusiness
+	 * @return
+	 */
+	private boolean sendMessageToShareContactWithBusiness(String emailBusiness) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/**
+	 * Consulta en la base de datos el nombre de la subasta
+	 * @return
+	 */
 	private String consultProjectName() {
 		Auctions auctions = o.getAuctionsIdauctions();
 		String projectName = auctions.getDescription();
 		return projectName;
 	}
 
-
-
+	/**
+	 * Consulta en la base de datos el número telefónico de la compañía
+	 * @return
+	 */
 	private String consultCompanyPhone() {
 		Auctions auctions = o.getAuctionsIdauctions();
 		Companies company = auctions.getCompaniesId();
@@ -144,8 +172,10 @@ public class DoPayment extends HttpServlet {
 		return companyPhone;
 	}
 
-
-
+	/**
+	 * Consulta en la base de datos el nombre de la persona de contacto de la compañía
+	 * @return
+	 */
 	private String consultCompanyMainContact() {
 		Auctions auctions = o.getAuctionsIdauctions();
 		Companies company = auctions.getCompaniesId();
@@ -153,30 +183,34 @@ public class DoPayment extends HttpServlet {
 		return companyMainContact;
 	}
 
-
-
+	/**
+	 * Consulta en la base de datos el nombre de la compañía
+	 * @return
+	 */
 	private String consultCompanyName() {
 		Auctions auctions = o.getAuctionsIdauctions();
 		Companies company = auctions.getCompaniesId();
 		String companyName = company.getName();
 		return companyName;
 	}
-
-
-
+	
+	/**
+	 * Consulta en la base de datos el nombre del estudiante
+	 * @return
+	 */
 	private String consultStudentName() {
 		Students student = o.getStudentsId();
 		String studentName = student.getName();
 		return studentName;
 	}
 
-
-
-	private boolean sendMessageToShareContactWithBusiness(String emailBusiness) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * Verifica si la transacción realizada por la empresa fue aprobada desde el gateway de pagos
+	 * @param state_pol
+	 * @param response_code_pol
+	 * @param response_message_pol
+	 * @return
+	 */
 	private boolean isTransactionApproved(String state_pol, String response_code_pol, String response_message_pol) {
 
 		if (state_pol.equals(STATE_POL_APPROVED) && response_code_pol.equals(RESPONSE_CODE_POL_APPROVED)
@@ -188,10 +222,20 @@ public class DoPayment extends HttpServlet {
 
 	}
 
+	/**
+	 * Consulta cuál es el estado o respuesta del gateway de pagos de una trasacción realizada por la empresa
+	 * @return
+	 */
 	private String checkTransactionStatus() {
 		return null;
 	}
 
+	/**
+	 * Utiliza el hash para verificar si una trasacción es válida.
+	 * @param pay_hash
+	 * @param test
+	 * @return
+	 */
 	private boolean validatedPayment(String pay_hash, String test) {
 
 		String payHash = t.getPayHash();
@@ -200,6 +244,17 @@ public class DoPayment extends HttpServlet {
 
 	}
 
+	/**
+	 * Actualiza la tabla Transactions de la base de datos con la información que recibe desde el gateway de pagos
+	 * @param response_code_pol
+	 * @param state_pol
+	 * @param response_message_pol
+	 * @param payment_method_type
+	 * @param transaction_date
+	 * @param payment_method_name
+	 * @return
+	 * @throws ParseException
+	 */
 	private boolean updatedModel(String response_code_pol, String state_pol, String response_message_pol,
 			String payment_method_type, String transaction_date, String payment_method_name) throws ParseException {
 
