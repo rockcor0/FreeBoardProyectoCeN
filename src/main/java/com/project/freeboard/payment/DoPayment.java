@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.project.freeboard.entity.Transactions;
+import com.project.freeboard.mensajes.ShareContacts;
 
 //Modulo para validar y registrar pagos
 public class DoPayment extends HttpServlet {
@@ -19,6 +20,7 @@ public class DoPayment extends HttpServlet {
 	public final static String RESPONSE_CODE_POL_APPROVED = "1";
 
 	private Transactions t;
+	private ShareContacts sc;
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,36 +51,49 @@ public class DoPayment extends HttpServlet {
 		boolean updated = false;
 
 		boolean isTransactionApproved = false;
+		
+		boolean sendMessageToShareContacts = false;
 
 		try {
 			if (validatedPayment) {
 				updated = updatedModel(response_code_pol, state_pol, response_message_pol, payment_method_type,
 						transaction_date, payment_method_name);
-			} else {
-				// Lanzar exception
-			}
+			} 
 
 			if (updated) {
 
 				isTransactionApproved = isTransactionApproved(state_pol, response_code_pol, response_message_pol);
 
-			} else {
-				// lanzar excepción
-			}
+			} 
 
 			if (isTransactionApproved) {
+				
+				String emailStudent = consultStudentEmail(id_oferta);
+				String emailBusiness = consultBusinessEmail(id_oferta);
+				sendMessageToShareContacts = sendMessageToShareContacts(emailStudent, emailBusiness);
 
-				isTransactionApproved = isTransactionApproved(state_pol, response_code_pol, response_message_pol);
-
-			} else {
-				// lanzar excepción
-			}
+			} 
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+
+	private String consultBusinessEmail(String id_oferta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String consultStudentEmail(String id_oferta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private boolean sendMessageToShareContacts(String emailStudent, String emailBusiness) {	
+		sc = new ShareContacts();
+		return sc.sendMessage(emailStudent, emailBusiness) ? true : false;
 	}
 
 	private boolean isTransactionApproved(String state_pol, String response_code_pol, String response_message_pol) {
