@@ -9,7 +9,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class ShareContactsWithStudent {
+public class SendEmailMessage {
 
 	public final static String EMAIL_ORIGEN = "ridel007@gmail.com";
 
@@ -19,7 +19,7 @@ public class ShareContactsWithStudent {
 
 	private Session session;
 
-	public ShareContactsWithStudent() {
+	public SendEmailMessage() {
 
 	}
 
@@ -34,18 +34,17 @@ public class ShareContactsWithStudent {
 		session = Session.getDefaultInstance(properties);
 	}
 
-	public boolean sendMessage(String emailDestino) {
+	public boolean sendMessage(String emailRecipient, String subject, String messageToSend) {
 		init();
 
 		boolean enviado = false;
-		String subject = "";
 
 		try {
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress((String) properties.get("mail.smtp.mail.sender")));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailDestino));
-			message.setSubject("Prueba");
-			message.setText("Texto");
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailRecipient));
+			message.setSubject(subject);
+			message.setText(messageToSend);
 			Transport t = session.getTransport("smtp");
 			t.connect((String) properties.get("mail.smtp.user"), "password");
 			t.sendMessage(message, message.getAllRecipients());

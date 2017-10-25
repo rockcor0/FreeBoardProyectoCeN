@@ -14,7 +14,7 @@ import com.project.freeboard.entity.Companies;
 import com.project.freeboard.entity.Offers;
 import com.project.freeboard.entity.Students;
 import com.project.freeboard.entity.Transactions;
-import com.project.freeboard.message.ShareContactsWithStudent;
+import com.project.freeboard.message.SendEmailMessage;
 
 //Modulo para validar y registrar pagos
 public class DoPayment extends HttpServlet {
@@ -24,7 +24,7 @@ public class DoPayment extends HttpServlet {
 	public final static String RESPONSE_CODE_POL_APPROVED = "1";
 
 	private Transactions t;
-	private ShareContactsWithStudent scws;
+	private SendEmailMessage scws;
 	private Offers o;
 
 	@Override
@@ -58,7 +58,8 @@ public class DoPayment extends HttpServlet {
 
 		boolean isTransactionApproved = false;
 
-		boolean sendMessageToShareContacts = false;
+		boolean sendMessageToShareContactWithStudent = false;
+		boolean sendMessageToShareContactWithBusiness = false;
 
 		try {
 			if (validatedPayment) {
@@ -74,7 +75,8 @@ public class DoPayment extends HttpServlet {
 
 				String emailStudent = consultStudentEmail();
 				String emailBusiness = consultBusinessEmail();
-				sendMessageToShareContacts = sendMessageToShareContacts(emailStudent, emailBusiness);
+				sendMessageToShareContactWithStudent = sendMessageToShareContactWithStudent(emailStudent, emailBusiness);
+				sendMessageToShareContactWithBusiness = sendMessageToShareContactWithBusiness(emailBusiness);
 			}
 
 		} catch (ParseException e) {
@@ -82,6 +84,8 @@ public class DoPayment extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
+	
 
 	private String consultBusinessEmail() {
 		Auctions auction = o.getAuctionsIdauctions();
@@ -96,16 +100,73 @@ public class DoPayment extends HttpServlet {
 		return studentEmail;
 	}
 
-	private boolean sendMessageToShareContacts(String emailStudent, String emailBusiness) {
-		scws = new ShareContactsWithStudent();
-		boolean messageToStudent = scws.sendMessage(emailStudent);
-		boolean messageToBusiness = scws.sendMessage(emailBusiness);
+	private boolean sendMessageToShareContactWithStudent(String emailStudent, String businessEmail) {
+		scws = new SendEmailMessage();
+		String subject = "";
+		String studentName = consultStudentName();
+		String companyName = consultCompanyName();
+		String companyMainContact = consultCompanyMainContact();
+		String companyEmail = businessEmail;
+		String companyPhone = consultCompanyPhone();
+		String projectName = consultProjectName();
 		
-		if( messageToBusiness && messageToStudent )
+		String message = "Estimado/a "+ studentName +"\n \n"
+				+ "La empresa "+ companyName +" ha aceptado tu oferta. Es momento de iniciar a trabajar en el proyecto. \n \n"
+				+ "Puedes acceder a la información del proyecto desde tu panel de usuario. \n \n"
+				+ "Los datos de contacto de la empresa son los siguientes: \n \n"
+				+ "- NOMBRE EMPRESA: " + companyName + " \n \n"
+				+ "- PERSONA DE CONTACTO: " + companyMainContact + " \n \n"
+				+ "- EMAIL: " + companyEmail + "\n \n"
+				+ "- TELÉFONO: " + companyPhone + "\n \n"
+				+ "- NOMBRE PROYECTO: " + projectName + "\n \n";
+		
+		boolean messageToStudent = scws.sendMessage(emailStudent, subject, message);
+		
+		if( messageToStudent )
 			return true;
 		else
 			return false;
 		
+	}
+	
+	private String consultProjectName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	private String consultCompanyPhone() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	private String consultCompanyMainContact() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	private String consultCompanyName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	private String consultStudentName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	private boolean sendMessageToShareContactWithBusiness(String emailBusiness) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	private boolean isTransactionApproved(String state_pol, String response_code_pol, String response_message_pol) {
