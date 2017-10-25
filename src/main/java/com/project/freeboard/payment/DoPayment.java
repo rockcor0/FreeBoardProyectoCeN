@@ -14,7 +14,7 @@ import com.project.freeboard.entity.Companies;
 import com.project.freeboard.entity.Offers;
 import com.project.freeboard.entity.Students;
 import com.project.freeboard.entity.Transactions;
-import com.project.freeboard.message.ShareContacts;
+import com.project.freeboard.message.ShareContactsWithStudent;
 
 //Modulo para validar y registrar pagos
 public class DoPayment extends HttpServlet {
@@ -24,7 +24,7 @@ public class DoPayment extends HttpServlet {
 	public final static String RESPONSE_CODE_POL_APPROVED = "1";
 
 	private Transactions t;
-	private ShareContacts sc;
+	private ShareContactsWithStudent scws;
 	private Offers o;
 
 	@Override
@@ -97,9 +97,9 @@ public class DoPayment extends HttpServlet {
 	}
 
 	private boolean sendMessageToShareContacts(String emailStudent, String emailBusiness) {
-		sc = new ShareContacts();
-		boolean messageToStudent = sc.sendMessage(emailStudent);
-		boolean messageToBusiness = sc.sendMessage(emailBusiness);
+		scws = new ShareContactsWithStudent();
+		boolean messageToStudent = scws.sendMessage(emailStudent);
+		boolean messageToBusiness = scws.sendMessage(emailBusiness);
 		
 		if( messageToBusiness && messageToStudent )
 			return true;

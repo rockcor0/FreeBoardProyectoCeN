@@ -9,7 +9,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class ShareContacts {
+public class ShareContactsWithStudent {
 
 	public final static String EMAIL_ORIGEN = "ridel007@gmail.com";
 
@@ -19,7 +19,7 @@ public class ShareContacts {
 
 	private Session session;
 
-	public ShareContacts() {
+	public ShareContactsWithStudent() {
 
 	}
 
