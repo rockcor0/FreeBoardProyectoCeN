@@ -10,28 +10,25 @@ import com.google.appengine.api.utils.SystemProperty;
 
 public final class PersistenceManager {
 
-	private static final EntityManagerFactory emfInstance = Persistence.createEntityManagerFactory("freeboard",
-			getEntityManagerProperties());
+    private static final EntityManagerFactory emfInstance =
+            Persistence.createEntityManagerFactory("freeboard", getEntityManagerProperties());
 
-	public static EntityManagerFactory get() {
-		return emfInstance;
-	}
 
-	private static Map<String, String> getEntityManagerProperties() {
-		Map<String, String> properties = new HashMap();
-		properties.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
-		properties.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3303/freeboard");
-		// if (SystemProperty.environment.value() ==
-		// SystemProperty.Environment.Value.Production) {
-		// properties.put("javax.persistence.jdbc.driver",
-		// "com.mysql.jdbc.GoogleDriver");
-		// properties.put("javax.persistence.jdbc.url",
-		// System.getProperty("cloudsql.url"));
-		// } else {
-		// properties.put("javax.persistence.jdbc.driver","com.mysql.jdbc.Driver");
-		// properties.put("javax.persistence.jdbc.url",System.getProperty("cloudsql.url.dev"));
-		// }
-		return properties;
-	}
+    public static EntityManagerFactory get() {
+        return emfInstance;
+    }
 
+    private static Map<String, String> getEntityManagerProperties()
+    {
+        Map<String, String> properties = new HashMap<String, String>();
+        if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+            properties.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.GoogleDriver");
+            properties.put("javax.persistence.jdbc.url", System.getProperty("cloudsql.url"));
+        } else {
+            properties.put("javax.persistence.jdbc.driver","com.mysql.jdbc.Driver");
+            properties.put("javax.persistence.jdbc.url",System.getProperty("cloudsql.url.dev"));
+        }
+        return properties;
+    }
+	
 }
