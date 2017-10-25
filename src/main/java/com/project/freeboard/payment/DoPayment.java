@@ -14,7 +14,7 @@ import com.project.freeboard.entity.Companies;
 import com.project.freeboard.entity.Offers;
 import com.project.freeboard.entity.Students;
 import com.project.freeboard.entity.Transactions;
-import com.project.freeboard.mensajes.ShareContacts;
+import com.project.freeboard.message.ShareContacts;
 
 //Modulo para validar y registrar pagos
 public class DoPayment extends HttpServlet {

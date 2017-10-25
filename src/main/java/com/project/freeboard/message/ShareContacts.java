@@ -1,4 +1,4 @@
-package com.project.freeboard.mensajes;
+package com.project.freeboard.message;
 
 public class ShareContacts {
 
