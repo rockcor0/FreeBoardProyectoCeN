@@ -93,6 +93,18 @@ public class AuctionsDAO {
 		em.getTransaction().commit();
 		return auction;
 	}
+	
+	public Auctions getAuctionsByName(String name) {
+
+		em.getTransaction().begin();
+		Auctions auction = null;
+		TypedQuery<Auctions> query = em.createNamedQuery("Auctions.findByName", Auctions.class);
+		query.setParameter("name", name);
+		auction = query.getSingleResult();
+		em.flush();
+		em.getTransaction().commit();
+		return auction;
+	}
 
 	public Auctions getAuctionsByTime(String time) {
 

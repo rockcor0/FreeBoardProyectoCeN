@@ -32,7 +32,7 @@ public class DoPayment extends HttpServlet {
 
 		String reference_code = req.getParameter("reference_sale"); // idTransaccion
 		String description = req.getParameter("description");
-		String amount = req.getParameter("amount"); // value en la respuesta
+		String amount = req.getParameter("value"); // value en la respuesta
 		String tax = req.getParameter("tax");
 		String tax_return_base = req.getParameter("tax_return_base");
 		String currency = req.getParameter("currency");
@@ -130,36 +130,44 @@ public class DoPayment extends HttpServlet {
 	}
 	
 	private String consultProjectName() {
-		// TODO Auto-generated method stub
-		return null;
+		Auctions auctions = o.getAuctionsIdauctions();
+		String projectName = auctions.getDescription();
+		return projectName;
 	}
 
 
 
 	private String consultCompanyPhone() {
-		// TODO Auto-generated method stub
-		return null;
+		Auctions auctions = o.getAuctionsIdauctions();
+		Companies company = auctions.getCompaniesId();
+		String companyPhone = company.getPhone();
+		return companyPhone;
 	}
 
 
 
 	private String consultCompanyMainContact() {
-		// TODO Auto-generated method stub
-		return null;
+		Auctions auctions = o.getAuctionsIdauctions();
+		Companies company = auctions.getCompaniesId();
+		String companyMainContact = company.getContactPerson();
+		return companyMainContact;
 	}
 
 
 
 	private String consultCompanyName() {
-		// TODO Auto-generated method stub
-		return null;
+		Auctions auctions = o.getAuctionsIdauctions();
+		Companies company = auctions.getCompaniesId();
+		String companyName = company.getName();
+		return companyName;
 	}
 
 
 
 	private String consultStudentName() {
-		// TODO Auto-generated method stub
-		return null;
+		Students student = o.getStudentsId();
+		String studentName = student.getName();
+		return studentName;
 	}
 
 

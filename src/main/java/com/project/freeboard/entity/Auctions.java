@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Auctions.findAll", query = "SELECT a FROM Auctions a")
     , @NamedQuery(name = "Auctions.findByIdauctions", query = "SELECT a FROM Auctions a WHERE a.idauctions = :idauctions")
     , @NamedQuery(name = "Auctions.findByType", query = "SELECT a FROM Auctions a WHERE a.type = :type")
+    , @NamedQuery(name = "Auctions.findByName", query = "SELECT a FROM Auctions a WHERE a.name = :name")
     , @NamedQuery(name = "Auctions.findBySize", query = "SELECT a FROM Auctions a WHERE a.size = :size")
     , @NamedQuery(name = "Auctions.findByMainColor", query = "SELECT a FROM Auctions a WHERE a.mainColor = :mainColor")
     , @NamedQuery(name = "Auctions.findBySecundaryColor", query = "SELECT a FROM Auctions a WHERE a.secundaryColor = :secundaryColor")
@@ -49,6 +50,11 @@ public class Auctions implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false, length = 32)
     private String idauctions;
+    
+    @Basic(optional = false)
+    @Column(nullable = false, length = 255)
+    private String name;
+    
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String type;
@@ -95,8 +101,9 @@ public class Auctions implements Serializable {
         this.idauctions = idauctions;
     }
 
-    public Auctions(String idauctions, String type, String size, String mainColor, String secundaryColor, String description, Date time, String price, Date created) {
+    public Auctions(String idauctions, String name, String type, String size, String mainColor, String secundaryColor, String description, Date time, String price, Date created) {
         this.idauctions = idauctions;
+        this.name = name;
         this.type = type;
         this.size = size;
         this.mainColor = mainColor;
@@ -244,5 +251,13 @@ public class Auctions implements Serializable {
     public String toString() {
         return "beansexample.Auctions[ idauctions=" + idauctions + " ]";
     }
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
     
 }
