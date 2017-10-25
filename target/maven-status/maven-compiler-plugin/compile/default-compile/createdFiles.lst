@@ -1,0 +1,14 @@
+com\project\freeboard\entity\Students.class
+com\project\freeboard\entity\Auctions.class
+com\project\freeboard\entity\Companies.class
+com\project\freeboard\entity\Offers_.class
+com\project\freeboard\entity\Students_.class
+com\project\freeboard\dao\StudentsDAO.class
+com\project\freeboard\entity\Companies_.class
+com\project\freeboard\entity\Offers.class
+com\project\freeboard\service\Freboard.class
+com\project\freeboard\dao\AuctionsDAO.class
+com\project\freeboard\service\PersistenceManager.class
+com\project\freeboard\dao\OffersDAO.class
+com\project\freeboard\dao\CompaniesDAO.class
+com\project\freeboard\entity\Auctions_.class
