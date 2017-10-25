@@ -24,7 +24,7 @@ public class DoPayment extends HttpServlet {
 	public final static String RESPONSE_CODE_POL_APPROVED = "1";
 
 	private Transactions t;
-	private SendEmailMessage scws;
+	private SendEmailMessage sem;
 	private Offers o;
 
 	@Override
@@ -76,13 +76,75 @@ public class DoPayment extends HttpServlet {
 				String emailStudent = consultStudentEmail();
 				String emailBusiness = consultBusinessEmail();
 				sendMessageToShareContactWithStudent = sendMessageToShareContactWithStudent(emailStudent, emailBusiness);
-				sendMessageToShareContactWithBusiness = sendMessageToShareContactWithBusiness(emailBusiness);
+				sendMessageToShareContactWithBusiness = sendMessageToShareContactWithBusiness(emailBusiness, emailStudent);
 			}
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Envía un mensaje de correo electrónico al estudiante para compartir la información de contacto de la empresa.
+	 * @param emailStudent
+	 * @param businessEmail
+	 * @return
+	 */
+	private boolean sendMessageToShareContactWithStudent(String emailStudent, String businessEmail) {
+		sem = new SendEmailMessage();
+		String studentName = consultStudentName();
+		String companyName = consultCompanyName();
+		String companyMainContact = consultCompanyMainContact();
+		String companyEmail = businessEmail;
+		String companyPhone = consultCompanyPhone();
+		String projectName = consultProjectName();
+
+		String subject = studentName +", tu oferta ha sido aprobada";
+
+		String message = "Estimado/a "+ studentName +"\n \n"
+				+ "La empresa "+ companyName +" ha aceptado tu oferta. Es momento de iniciar a trabajar en el proyecto. \n \n"
+				+ "Puedes acceder a la información del proyecto desde tu panel de usuario. \n \n"
+				+ "Los datos de contacto de la empresa son los siguientes: \n \n"
+				+ "- NOMBRE EMPRESA: " + companyName + " \n \n"
+				+ "- PERSONA DE CONTACTO: " + companyMainContact + " \n \n"
+				+ "- EMAIL: " + companyEmail + "\n \n"
+				+ "- TELÉFONO: " + companyPhone + "\n \n"
+				+ "- NOMBRE PROYECTO: " + projectName + "\n \n";
+
+		boolean messageToStudent = sem.sendMessage(emailStudent, subject, message);
+
+		if( messageToStudent )
+			return true;
+		else
+			return false;
+
+	}
+
+	/**
+	 * Envía un mensaje a la empresa con los datos de contacto del estudiante
+	 * @param emailBusiness
+	 * @return
+	 */
+	private boolean sendMessageToShareContactWithBusiness(String businessEmail, String emailStudent) {
+
+		sem = new SendEmailMessage();
+		String studentName = consultStudentName();
+		String companyName = consultCompanyName();
+		String companyMainContact = consultCompanyMainContact();
+		String companyEmail = businessEmail;
+		String projectName = consultProjectName();
+
+		String subject = studentName +", tu oferta ha sido aprobada";
+		
+		String message = "";
+
+		boolean messageToStudent = sem.sendMessage(emailStudent, subject, message);
+
+		if( messageToStudent )
+			return true;
+		else
+			return false;
 	}
 
 	/**
@@ -107,57 +169,12 @@ public class DoPayment extends HttpServlet {
 	}
 
 	/**
-	 * Envía un mensaje de correo electrónico al estudiante para compartir la información de contacto de la empresa.
-	 * @param emailStudent
-	 * @param businessEmail
-	 * @return
-	 */
-	private boolean sendMessageToShareContactWithStudent(String emailStudent, String businessEmail) {
-		scws = new SendEmailMessage();
-		String subject = "";
-		String studentName = consultStudentName();
-		String companyName = consultCompanyName();
-		String companyMainContact = consultCompanyMainContact();
-		String companyEmail = businessEmail;
-		String companyPhone = consultCompanyPhone();
-		String projectName = consultProjectName();
-		
-		String message = "Estimado/a "+ studentName +"\n \n"
-				+ "La empresa "+ companyName +" ha aceptado tu oferta. Es momento de iniciar a trabajar en el proyecto. \n \n"
-				+ "Puedes acceder a la información del proyecto desde tu panel de usuario. \n \n"
-				+ "Los datos de contacto de la empresa son los siguientes: \n \n"
-				+ "- NOMBRE EMPRESA: " + companyName + " \n \n"
-				+ "- PERSONA DE CONTACTO: " + companyMainContact + " \n \n"
-				+ "- EMAIL: " + companyEmail + "\n \n"
-				+ "- TELÉFONO: " + companyPhone + "\n \n"
-				+ "- NOMBRE PROYECTO: " + projectName + "\n \n";
-		
-		boolean messageToStudent = scws.sendMessage(emailStudent, subject, message);
-		
-		if( messageToStudent )
-			return true;
-		else
-			return false;
-		
-	}
-	
-	/**
-	 * Envía un mensaje a la empresa con los datos de contacto del estudiante
-	 * @param emailBusiness
-	 * @return
-	 */
-	private boolean sendMessageToShareContactWithBusiness(String emailBusiness) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	/**
 	 * Consulta en la base de datos el nombre de la subasta
 	 * @return
 	 */
 	private String consultProjectName() {
 		Auctions auctions = o.getAuctionsIdauctions();
-		String projectName = auctions.getDescription();
+		String projectName = auctions.getName();
 		return projectName;
 	}
 
@@ -193,7 +210,7 @@ public class DoPayment extends HttpServlet {
 		String companyName = company.getName();
 		return companyName;
 	}
-	
+
 	/**
 	 * Consulta en la base de datos el nombre del estudiante
 	 * @return
