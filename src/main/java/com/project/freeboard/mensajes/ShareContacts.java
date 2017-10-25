@@ -6,7 +6,9 @@ public class ShareContacts {
 	private String emailEmpresa;
 
 	public ShareContacts() {
-		// TODO Auto-generated constructor stub
+		
+		//compartir contactos
+ 
 	}
 
 }
