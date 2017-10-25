@@ -98,7 +98,14 @@ public class DoPayment extends HttpServlet {
 
 	private boolean sendMessageToShareContacts(String emailStudent, String emailBusiness) {
 		sc = new ShareContacts();
-		return sc.sendMessage(emailStudent, emailBusiness) ? true : false;
+		boolean messageToStudent = sc.sendMessage(emailStudent);
+		boolean messageToBusiness = sc.sendMessage(emailBusiness);
+		
+		if( messageToBusiness && messageToStudent )
+			return true;
+		else
+			return false;
+		
 	}
 
 	private boolean isTransactionApproved(String state_pol, String response_code_pol, String response_message_pol) {
