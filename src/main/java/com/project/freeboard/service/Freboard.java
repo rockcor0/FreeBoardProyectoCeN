@@ -42,7 +42,7 @@ public class Freboard {
 			@Named("contactPerson") String contactPerson) throws NotFoundException {
 
 		cDAO = new CompaniesDAO();
-		Companies company = new Companies(nit, name, phone, address, mail, password, contactPerson);
+		Companies company = new Companies(nit, name, phone, address, mail, password, contactPerson, null);
 		if (cDAO.addCompany(company)) {
 			return company;
 		} else {
@@ -113,13 +113,13 @@ public class Freboard {
 			throws NotFoundException {
 
 		sDAO = new StudentsDAO();
-		Students s = new Students(cc, name, email, phone, bankWire, bank, accountType, university, career, titular,
-				experiencia, skills, password);
-		if (sDAO.addStudent(s)) {
-			return s;
-		} else {
+//		Students s = new Students(cc, name, email, phone, bankWire, bank, accountType, university, career, titular,
+//				experiencia, skills, password);
+//		if (sDAO.addStudent(s)) {
+//			return s;
+//		} else {
 			throw new NotFoundException("Student not added.");
-		}
+//		}
 	}
 
 	@ApiMethod(name = "updateStudent", path = "updateStudent", httpMethod = ApiMethod.HttpMethod.PUT)
@@ -180,14 +180,15 @@ public class Freboard {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 
-		Auctions auction = new Auctions(idauctions, type, size, mainColor, secundaryColor, description, time, price,
-				sketch);
-		if (aDAO.addAuctions(auction)) {
-			return auction;
-		} else {
-			throw new NotFoundException("Auction not added.");
-		}
+//		Auctions auction = new Auctions(idauctions, type, size, mainColor, secundaryColor, description, time, price,
+//				sketch);
+//		if (aDAO.addAuctions(auction)) {
+//			return auction;
+//		} else {
+//			throw new NotFoundException("Auction not added.");
+//		}
 	}
 
 	@ApiMethod(name = "updateAuction", path = "updateAuction", httpMethod = ApiMethod.HttpMethod.PUT)
@@ -279,12 +280,12 @@ public class Freboard {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Offers offer = new Offers(idoffers, price, students_cc, auctions_idauctions);
-		if (oDAO.addOffers(offer)) {
-			return offer;
-		} else {
+//		Offers offer = new Offers(idoffers, price, students_cc, auctions_idauctions);
+//		if (oDAO.addOffers(offer)) {
+//			return offer;
+//		} else {
 			throw new NotFoundException("Offers no se pudo agregar.");
-		}
+//		}
 	}
 
 	@ApiMethod(name = "updateOffers", path = "offers", httpMethod = ApiMethod.HttpMethod.PUT)

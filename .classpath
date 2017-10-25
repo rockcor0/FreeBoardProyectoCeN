@@ -93,5 +93,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Ricard/Downloads/javamail1_4_5/javamail-1.4.5/mail.jar"/>
 	<classpathentry kind="output" path="target/freeboard-1.0-SNAPSHOT/WEB-INF/classes"/>
 </classpath>
