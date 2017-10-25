@@ -24,7 +24,10 @@ public class DoPayment extends HttpServlet {
 	public final static String RESPONSE_CODE_POL_APPROVED = "1";
 
 	private Transactions t;
+<<<<<<< HEAD
 	private Offers o;
+=======
+>>>>>>> branch 'master' of https://github.com/rocco522/FreeBoardProyectoCeN.git
 	private ShareContacts sc;
 
 	@Override
@@ -57,6 +60,8 @@ public class DoPayment extends HttpServlet {
 		boolean updated = false;
 
 		boolean isTransactionApproved = false;
+		
+		boolean sendMessageToShareContacts = false;
 
 		boolean sendMessageToShareContacts = false;
 
@@ -64,19 +69,36 @@ public class DoPayment extends HttpServlet {
 			if (validatedPayment) {
 				updated = updatedModel(response_code_pol, state_pol, response_message_pol, payment_method_type,
 						transaction_date, payment_method_name);
+<<<<<<< HEAD
 			}
+=======
+			} 
+>>>>>>> branch 'master' of https://github.com/rocco522/FreeBoardProyectoCeN.git
 
 			if (updated) {
 
 				isTransactionApproved = isTransactionApproved(state_pol, response_code_pol, response_message_pol);
+<<<<<<< HEAD
 			}
+=======
+
+			} 
+>>>>>>> branch 'master' of https://github.com/rocco522/FreeBoardProyectoCeN.git
 
 			if (isTransactionApproved) {
+				
+				String emailStudent = consultStudentEmail(id_oferta);
+				String emailBusiness = consultBusinessEmail(id_oferta);
+				sendMessageToShareContacts = sendMessageToShareContacts(emailStudent, emailBusiness);
 
+<<<<<<< HEAD
 				String emailStudent = consultStudentEmail();
 				String emailBusiness = consultBusinessEmail();
 				sendMessageToShareContacts = sendMessageToShareContacts(emailStudent, emailBusiness);
 			}
+=======
+			} 
+>>>>>>> branch 'master' of https://github.com/rocco522/FreeBoardProyectoCeN.git
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -100,6 +122,21 @@ public class DoPayment extends HttpServlet {
 	}
 
 	private boolean sendMessageToShareContacts(String emailStudent, String emailBusiness) {
+		sc = new ShareContacts();
+		return sc.sendMessage(emailStudent, emailBusiness) ? true : false;
+	}
+
+	private String consultBusinessEmail(String id_oferta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String consultStudentEmail(String id_oferta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private boolean sendMessageToShareContacts(String emailStudent, String emailBusiness) {	
 		sc = new ShareContacts();
 		return sc.sendMessage(emailStudent, emailBusiness) ? true : false;
 	}

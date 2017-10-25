@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.project.freeboard.mensajes;
 
 public class PaymentReminder {
@@ -7,3 +8,6 @@ public class PaymentReminder {
 	}
 
 }
+=======
+
+>>>>>>> branch 'master' of https://github.com/rocco522/FreeBoardProyectoCeN.git
