@@ -1,14 +1,14 @@
 package com.project.freeboard.mensajes;
 
 public class ShareContacts {
-	
-	private String emailEstudiante;
-	private String emailEmpresa;
+
 
 	public ShareContacts() {
+	}
+
+	public boolean sendMessage(String emailStudent, String emailBusiness) {
+		return false;
 		
-		//compartir contactos
- 
 	}
 
 }

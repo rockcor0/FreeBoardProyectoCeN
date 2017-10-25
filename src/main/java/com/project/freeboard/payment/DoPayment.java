@@ -67,8 +67,10 @@ public class DoPayment extends HttpServlet {
 			} 
 
 			if (isTransactionApproved) {
-
-				sendMessageToShareContacts = sendMessageToShareContacts();
+				
+				String emailStudent = consultStudentEmail(id_oferta);
+				String emailBusiness = consultBusinessEmail(id_oferta);
+				sendMessageToShareContacts = sendMessageToShareContacts(emailStudent, emailBusiness);
 
 			} 
 
@@ -79,9 +81,19 @@ public class DoPayment extends HttpServlet {
 
 	}
 
-	private boolean sendMessageToShareContacts() {
+	private String consultBusinessEmail(String id_oferta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String consultStudentEmail(String id_oferta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private boolean sendMessageToShareContacts(String emailStudent, String emailBusiness) {	
 		sc = new ShareContacts();
-		return false;
+		return sc.sendMessage(emailStudent, emailBusiness) ? true : false;
 	}
 
 	private boolean isTransactionApproved(String state_pol, String response_code_pol, String response_message_pol) {
