@@ -1,4 +1,4 @@
-package com.project.freeboard.payment;
+package com.project.freeboard.servlets;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -9,14 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.api.server.spi.response.NotFoundException;
 import com.project.freeboard.entity.Auctions;
 import com.project.freeboard.entity.Companies;
 import com.project.freeboard.entity.Offers;
 import com.project.freeboard.entity.Students;
 import com.project.freeboard.entity.Transactions;
 import com.project.freeboard.message.SendEmailMessage;
+import com.project.freeboard.service.Freboard;
 
-//Modulo para validar y registrar pagos
+/**
+ * Modulo para validar y registrar pagos
+ * @author Ricardo
+ *
+ */
 public class DoPayment extends HttpServlet {
 
 	public final static String STATE_POL_APPROVED = "4";
@@ -26,6 +32,7 @@ public class DoPayment extends HttpServlet {
 	private Transactions t;
 	private SendEmailMessage sem;
 	private Offers o;
+	private Freboard freeboard;
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -47,6 +54,20 @@ public class DoPayment extends HttpServlet {
 		String payment_method_type = req.getParameter("payment_method_type");
 		String transaction_date = req.getParameter("transaction_date");
 		String payment_method_name = req.getParameter("payment_method_name");
+		
+		
+		System.out.println("Amount: " + amount);
+		freeboard= new Freboard();
+		try {
+			Companies companies= freeboard.getCompanyByName(amount);
+			System.out.println(companies.getHash());
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 
 		t = new Transactions(reference_code);
 		o = new Offers(id_oferta);

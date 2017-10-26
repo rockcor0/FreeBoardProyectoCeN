@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Transactions.findByPayHash", query = "SELECT t FROM Transactions t WHERE t.payHash = :payHash")
     , @NamedQuery(name = "Transactions.findByStatePol", query = "SELECT t FROM Transactions t WHERE t.statePol = :statePol")
     , @NamedQuery(name = "Transactions.findByResponseCodePol", query = "SELECT t FROM Transactions t WHERE t.responseCodePol = :responseCodePol")
-    , @NamedQuery(name = "Transactions.findByResponseMessageCol", query = "SELECT t FROM Transactions t WHERE t.responseMessageCol = :responseMessageCol")
+    , @NamedQuery(name = "Transactions.findByResponseMessageCol", query = "SELECT t FROM Transactions t WHERE t.responseMessagePol = :responseMessageCol")
     , @NamedQuery(name = "Transactions.findByPaymentMethodType", query = "SELECT t FROM Transactions t WHERE t.paymentMethodType = :paymentMethodType")
     , @NamedQuery(name = "Transactions.findByTransactionDate", query = "SELECT t FROM Transactions t WHERE t.transactionDate = :transactionDate")
     , @NamedQuery(name = "Transactions.findByPaymentMethodName", query = "SELECT t FROM Transactions t WHERE t.paymentMethodName = :paymentMethodName")
@@ -85,8 +85,8 @@ public class Transactions implements Serializable {
     private Integer statePol;
     @Column(name = "response_code_pol", length = 255)
     private Integer responseCodePol;
-    @Column(name = "response_message_col")
-    private String responseMessageCol;
+    @Column(name = "response_message_Pol")
+    private String responseMessagePol;
     @Column(name = "payment_method_type")
     private Integer paymentMethodType;
     @Column(name = "transaction_date")
@@ -224,12 +224,12 @@ public class Transactions implements Serializable {
         this.responseCodePol = responseCodePol;
     }
 
-    public String getResponseMessageCol() {
-        return responseMessageCol;
+    public String getResponseMessagePol() {
+        return responseMessagePol;
     }
 
     public void setResponseMessageCol(String responseMessageCol) {
-        this.responseMessageCol = responseMessageCol;
+        this.responseMessagePol = responseMessageCol;
     }
 
     public Integer getPaymentMethodType() {

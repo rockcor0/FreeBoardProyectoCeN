@@ -9,6 +9,15 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
 	<!-- Wrap the backend with Endpoints Frameworks v2. -->
 	<servlet>
+		<servlet-name>DoPayment</servlet-name>
+		<servlet-class>com.project.freeboard.servlets.DoPayment
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DoPayment</servlet-name>
+		<url-pattern>/payment</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>EndpointsServlet</servlet-name>
 		<servlet-class>com.google.api.server.spi.EndpointsServlet
 		</servlet-class>

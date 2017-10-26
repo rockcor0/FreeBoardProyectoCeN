@@ -15,7 +15,7 @@ public class OffersDAO {
 	private EntityManager em;
 
 	public OffersDAO() {
-		em = PersistenceManager.get().createEntityManager();
+		em = PersistenceManager.getEntityManager();
 	}
 
 	public boolean addOffers(Offers o) {

@@ -15,7 +15,7 @@ public class AuctionsDAO {
 	private EntityManager em;
 
 	public AuctionsDAO() {
-		em = PersistenceManager.get().createEntityManager();
+		em = PersistenceManager.getEntityManager();
 	}
 
 	public boolean addAuctions(Auctions e) {
@@ -88,18 +88,6 @@ public class AuctionsDAO {
 		Auctions auction = null;
 		TypedQuery<Auctions> query = em.createNamedQuery("Auctions.findByType", Auctions.class);
 		query.setParameter("type", type);
-		auction = query.getSingleResult();
-		em.flush();
-		em.getTransaction().commit();
-		return auction;
-	}
-	
-	public Auctions getAuctionsByName(String name) {
-
-		em.getTransaction().begin();
-		Auctions auction = null;
-		TypedQuery<Auctions> query = em.createNamedQuery("Auctions.findByName", Auctions.class);
-		query.setParameter("name", name);
 		auction = query.getSingleResult();
 		em.flush();
 		em.getTransaction().commit();

@@ -1,9 +1,9 @@
 package com.project.freeboard.service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.jdo.annotations.Transactional;
 import com.google.api.server.spi.config.Api;
@@ -11,7 +11,6 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.NotFoundException;
-import com.mysql.jdbc.Blob;
 import com.project.freeboard.dao.AuctionsDAO;
 import com.project.freeboard.dao.CompaniesDAO;
 import com.project.freeboard.dao.OffersDAO;
@@ -36,13 +35,15 @@ public class Freboard {
 	/**
 	 * API Company Entity
 	 */
-	@ApiMethod(name = "addCompany", path = "addCompany", httpMethod = ApiMethod.HttpMethod.POST)
-	public Companies addCompany(@Named("nit") String nit, @Named("name") String name, @Named("phone") String phone,
-			@Named("address") String address, @Named("mail") String mail, @Named("password") String password,
+	@ApiMethod(name = "signUpCompany", path = "signUpCompany", httpMethod = ApiMethod.HttpMethod.POST)
+	public Companies signUpCompany(@Named("email") String email, @Named("name") String name, @Named("phone") String phone,
+			@Named("address") String address, @Named("password") String password,
 			@Named("contactPerson") String contactPerson) throws NotFoundException {
 
 		cDAO = new CompaniesDAO();
-		Companies company = new Companies(nit, name, phone, address, mail, password, contactPerson, null);
+		String hash = UUID.randomUUID().toString().replaceAll("-", "");
+		Date created = Calendar.getInstance().getTime();
+		Companies company = new Companies(email, name, phone, address, password, contactPerson, hash, created);
 		if (cDAO.addCompany(company)) {
 			return company;
 		} else {
@@ -53,6 +54,8 @@ public class Freboard {
 	@ApiMethod(name = "updateCompany", path = "updateCompany", httpMethod = ApiMethod.HttpMethod.PUT)
 	public Companies updateCompany(Companies c) throws NotFoundException {
 		cDAO = new CompaniesDAO();
+		Date updated = Calendar.getInstance().getTime();
+		c.setUpdated(updated);
 		if (cDAO.updateCompanie(c)) {
 			return c;
 		} else {
@@ -61,10 +64,10 @@ public class Freboard {
 	}
 
 	@Transactional
-	@ApiMethod(name = "removeCompany", path = "removeCompany/{nit}", httpMethod = ApiMethod.HttpMethod.DELETE)
-	public void removeCompany(@Named("nit") String nit) throws NotFoundException {
+	@ApiMethod(name = "removeCompany", path = "removeCompany/{email}", httpMethod = ApiMethod.HttpMethod.DELETE)
+	public void removeCompany(@Named("email") String email) throws NotFoundException {
 		cDAO = new CompaniesDAO();
-		if (!cDAO.removeCompanie(nit)) {
+		if (!cDAO.removeCompanie(email)) {
 			throw new NotFoundException("Company doesn't exist.");
 		}
 	}
@@ -78,7 +81,7 @@ public class Freboard {
 		return companies;
 	}
 
-	@ApiMethod(name = "getCompanyByNIT", path = "companies/{nit}", httpMethod = ApiMethod.HttpMethod.GET)
+	@ApiMethod(name = "getCompanyByNIT", path = "companiesByNIT/{nit}", httpMethod = ApiMethod.HttpMethod.GET)
 	public Companies getCompanyByNIT(@Named("nit") String nit) throws NotFoundException {
 		cDAO = new CompaniesDAO();
 		Companies companies = cDAO.getCompanieById(nit);
@@ -89,7 +92,7 @@ public class Freboard {
 		}
 	}
 
-	@ApiMethod(name = "getCompanyByName", path = "companies/{nit}", httpMethod = ApiMethod.HttpMethod.GET)
+	@ApiMethod(name = "getCompanyByName", path = "companiesByName/{name}", httpMethod = ApiMethod.HttpMethod.GET)
 	public Companies getCompanyByName(@Named("name") String name) throws NotFoundException {
 		cDAO = new CompaniesDAO();
 		Companies companies = cDAO.getCompanieByName(name);
@@ -104,23 +107,29 @@ public class Freboard {
 	 * API Student Entity
 	 */
 
-	@ApiMethod(name = "addStudent", path = "addStudent", httpMethod = ApiMethod.HttpMethod.POST)
-	public Students addStudent(@Named("cc") String cc, @Named("name") String name, @Named("email") String email,
-			@Named("phone") String phone, @Named("bankWire") String bankWire, @Named("bank") String bank,
-			@Named("accountType") String accountType, @Named("university") String university,
-			@Named("career") String career, @Named("accountOwner") String titular,
-			@Named("experience") String experiencia, @Named("skills") String skills, @Named("password") String password)
-			throws NotFoundException {
-
-		sDAO = new StudentsDAO();
-//		Students s = new Students(cc, name, email, phone, bankWire, bank, accountType, university, career, titular,
-//				experiencia, skills, password);
-//		if (sDAO.addStudent(s)) {
-//			return s;
-//		} else {
-			throw new NotFoundException("Student not added.");
-//		}
-	}
+	// @ApiMethod(name = "addStudent", path = "addStudent", httpMethod =
+	// ApiMethod.HttpMethod.POST)
+	// public Students addStudent(@Named("cc") String cc, @Named("name") String
+	// name, @Named("email") String email,
+	// @Named("phone") String phone, @Named("bankWire") String bankWire,
+	// @Named("bank") String bank,
+	// @Named("accountType") String accountType, @Named("university") String
+	// university,
+	// @Named("career") String career, @Named("accountOwner") String titular,
+	// @Named("experience") String experiencia, @Named("skills") String skills,
+	// @Named("password") String password)
+	// throws NotFoundException {
+	//
+	// sDAO = new StudentsDAO();
+	// Students s = new Students(cc, name, email, phone, bankWire, bank,
+	// accountType, university, career, titular,
+	// experiencia, skills, password);
+	// if (sDAO.addStudent(s)) {
+	// return s;
+	// } else {
+	// throw new NotFoundException("Student not added.");
+	// }
+	// }
 
 	@ApiMethod(name = "updateStudent", path = "updateStudent", httpMethod = ApiMethod.HttpMethod.PUT)
 	public Students updateStudent(Students s) throws NotFoundException {
@@ -165,31 +174,44 @@ public class Freboard {
 	 * API Auction Entity
 	 */
 
-	@ApiMethod(name = "addAuction", path = "addAuction", httpMethod = ApiMethod.HttpMethod.POST)
-	public Auctions addAuction(@Named("type") String type, @Named("size") String size,
-			@Named("mainColor") String mainColor, @Named("secundaryColor") String secundaryColor,
-			@Named("description") String description, @Named("date") Date time, @Named("price") String price,
-			@Named("sketch") Blob sketch) throws NotFoundException {
-
-		aDAO = new AuctionsDAO();
-		int idauctions = -1;
-		try {
-			SecureRandom prng = SecureRandom.getInstance("SHA1PRNG");
-			idauctions = new Integer(prng.nextInt());
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-
-//		Auctions auction = new Auctions(idauctions, type, size, mainColor, secundaryColor, description, time, price,
-//				sketch);
-//		if (aDAO.addAuctions(auction)) {
-//			return auction;
-//		} else {
-//			throw new NotFoundException("Auction not added.");
-//		}
-	}
+	// @ApiMethod(name = "addAuction", path = "addAuction", httpMethod =
+	// ApiMethod.HttpMethod.POST)
+	// public Auctions addAuction(@Named("type") String type, @Named("size")
+	// String size,
+	// @Named("mainColor") String mainColor, @Named("secundaryColor") String
+	// secundaryColor,
+	// @Named("description") String description, @Named("date") Date time,
+	// @Named("price") String price,
+	// @Named("sketch") String sketch) throws NotFoundException {
+	//
+	// aDAO = new AuctionsDAO();
+	// int idauctions = -1;
+	// try {
+	// SecureRandom prng = SecureRandom.getInstance("SHA1PRNG");
+	// idauctions = new Integer(prng.nextInt());
+	// } catch (NoSuchAlgorithmException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// File file = new File(sketch);
+	// byte[] bFile = new byte[(int) file.length()];
+	// try {
+	// FileInputStream input = new FileInputStream(file);
+	// input.read(bFile);
+	// input.close();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// Auctions auction = new Auctions(idauctions, type, size, mainColor,
+	// secundaryColor, description, time, price,
+	// bFile);
+	// if (aDAO.addAuctions(auction)) {
+	// return auction;
+	// } else {
+	// throw new NotFoundException("Auction not added.");
+	// }
+	// }
 
 	@ApiMethod(name = "updateAuction", path = "updateAuction", httpMethod = ApiMethod.HttpMethod.PUT)
 	public Auctions updateAuction(Auctions a) throws NotFoundException {
@@ -219,7 +241,7 @@ public class Freboard {
 		return auctions;
 	}
 
-	@ApiMethod(name = "getAuctionById", path = "auctions/{id}", httpMethod = ApiMethod.HttpMethod.GET)
+	@ApiMethod(name = "getAuctionById", path = "auctionsById/{id}", httpMethod = ApiMethod.HttpMethod.GET)
 	public Auctions getAuctionById(@Named("id") String id) throws NotFoundException {
 		aDAO = new AuctionsDAO();
 		Auctions auction = aDAO.getAuctionsById(id);
@@ -230,7 +252,7 @@ public class Freboard {
 		}
 	}
 
-	@ApiMethod(name = "getAuctionByType", path = "auctions/{type}", httpMethod = ApiMethod.HttpMethod.GET)
+	@ApiMethod(name = "getAuctionByType", path = "auctionsByType/{type}", httpMethod = ApiMethod.HttpMethod.GET)
 	public Auctions getAuctionByType(@Named("type") String type) throws NotFoundException {
 		aDAO = new AuctionsDAO();
 		Auctions auction = aDAO.getAuctionsById(type);
@@ -241,7 +263,7 @@ public class Freboard {
 		}
 	}
 
-	@ApiMethod(name = "getAuctionByTime", path = "auctions/{time}", httpMethod = ApiMethod.HttpMethod.GET)
+	@ApiMethod(name = "getAuctionByTime", path = "auctionsByTime/{time}", httpMethod = ApiMethod.HttpMethod.GET)
 	public Auctions getAuctionByTime(@Named("id") String time) throws NotFoundException {
 		aDAO = new AuctionsDAO();
 		Auctions auction = aDAO.getAuctionsById(time);
@@ -252,7 +274,7 @@ public class Freboard {
 		}
 	}
 
-	@ApiMethod(name = "getAuctionByPrice", path = "auctions/{price}", httpMethod = ApiMethod.HttpMethod.GET)
+	@ApiMethod(name = "getAuctionByPrice", path = "auctionsByPrice/{price}", httpMethod = ApiMethod.HttpMethod.GET)
 	public Auctions getAuctionByPrice(@Named("price") String price) throws NotFoundException {
 		aDAO = new AuctionsDAO();
 		Auctions auction = aDAO.getAuctionsById(price);
@@ -267,26 +289,30 @@ public class Freboard {
 	 * API Offer Entity
 	 */
 
-	@ApiMethod(name = "addoffers", path = "offers", httpMethod = ApiMethod.HttpMethod.POST)
-	public Offers addOffers(@Named("price") String price, @Named("students_cc") String students_cc,
-			@Named("auctions_idauctions") int auctions_idauctions) throws NotFoundException {
-
-		oDAO = new OffersDAO();
-		int idoffers = -1;
-		try {
-			SecureRandom prng = SecureRandom.getInstance("SHA1PRNG");
-			idoffers = new Integer(prng.nextInt());
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		Offers offer = new Offers(idoffers, price, students_cc, auctions_idauctions);
-//		if (oDAO.addOffers(offer)) {
-//			return offer;
-//		} else {
-			throw new NotFoundException("Offers no se pudo agregar.");
-//		}
-	}
+	// @ApiMethod(name = "addoffers", path = "offers", httpMethod =
+	// ApiMethod.HttpMethod.POST)
+	// public Offers addOffers(@Named("price") String price,
+	// @Named("students_cc") String students_cc,
+	// @Named("auctions_idauctions") int auctions_idauctions) throws
+	// NotFoundException {
+	//
+	// oDAO = new OffersDAO();
+	// int idoffers = -1;
+	// try {
+	// SecureRandom prng = SecureRandom.getInstance("SHA1PRNG");
+	// idoffers = new Integer(prng.nextInt());
+	// } catch (NoSuchAlgorithmException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// Offers offer = new Offers(idoffers, price, students_cc,
+	// auctions_idauctions);
+	// if (oDAO.addOffers(offer)) {
+	// return offer;
+	// } else {
+	// throw new NotFoundException("Offers no se pudo agregar.");
+	// }
+	// }
 
 	@ApiMethod(name = "updateOffers", path = "offers", httpMethod = ApiMethod.HttpMethod.PUT)
 	public Offers updateOffers(Offers e) throws NotFoundException {
@@ -294,20 +320,20 @@ public class Freboard {
 		if (oDAO.updateOffers(e)) {
 			return e;
 		} else {
-			throw new NotFoundException("Offers no existe.");
+			throw new NotFoundException("Offer no existe.");
 		}
 	}
 
 	@Transactional
-	@ApiMethod(name = "removeOffers", path = "Offers/{id}", httpMethod = ApiMethod.HttpMethod.DELETE)
+	@ApiMethod(name = "removeOffers", path = "offers/{id}", httpMethod = ApiMethod.HttpMethod.DELETE)
 	public void removeOffers(@Named("id") String id) throws NotFoundException {
 		oDAO = new OffersDAO();
 		if (!oDAO.removeOffers(id)) {
-			throw new NotFoundException("Offers no existe.");
+			throw new NotFoundException("Offer no existe.");
 		}
 	}
 
-	@ApiMethod(name = "getAllOffers", path = "Offerss", httpMethod = ApiMethod.HttpMethod.GET)
+	@ApiMethod(name = "getAllOffers", path = "offers", httpMethod = ApiMethod.HttpMethod.GET)
 	public List<Offers> getOffers() {
 
 		oDAO = new OffersDAO();
@@ -316,14 +342,14 @@ public class Freboard {
 		return Offers;
 	}
 
-	@ApiMethod(name = "getOffersById", path = "Offerss/{id}", httpMethod = ApiMethod.HttpMethod.GET)
-	public Offers getOffers(@Named("id") String id) throws NotFoundException {
+	@ApiMethod(name = "getOffersById", path = "offers/{id}", httpMethod = ApiMethod.HttpMethod.GET)
+	public Offers getOffersById(@Named("id") String id) throws NotFoundException {
 		oDAO = new OffersDAO();
 		Offers Offers = oDAO.getOffersById(id);
 		if (Offers != null) {
 			return Offers;
 		} else {
-			throw new NotFoundException("Offers no existe.");
+			throw new NotFoundException("Offer no existe.");
 		}
 	}
 }

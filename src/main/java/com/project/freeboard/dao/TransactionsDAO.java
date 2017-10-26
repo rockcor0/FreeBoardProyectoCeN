@@ -14,7 +14,7 @@ public class TransactionsDAO {
 	private EntityManager em;
 	
 	public TransactionsDAO() {
-		em = PersistenceManager.get().createEntityManager();
+		em = PersistenceManager.getEntityManager();
 	}
 	
 	public boolean addTransactions(Transactions p) {

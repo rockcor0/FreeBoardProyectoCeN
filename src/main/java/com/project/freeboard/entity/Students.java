@@ -1,4 +1,5 @@
 package com.project.freeboard.entity;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author nicolas1
  */
 @Entity
-@Table(uniqueConstraints = {
+@Table(name= "students", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"email"})})
 @XmlRootElement
 @NamedQueries({

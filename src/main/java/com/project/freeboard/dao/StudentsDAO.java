@@ -15,7 +15,7 @@ public class StudentsDAO {
 	private EntityManager em;
 
 	public StudentsDAO() {
-		em = PersistenceManager.get().createEntityManager();
+		em = PersistenceManager.getEntityManager();
 	}
 
 	public boolean addStudent(Students s) {
@@ -27,6 +27,7 @@ public class StudentsDAO {
 			em.getTransaction().commit();
 			return true;
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			return false;
 		}
 	}
