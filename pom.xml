@@ -28,7 +28,7 @@
 		<hibernate.version>5.2.11.Final</hibernate.version>
 
 		<cloudsql.url>jdbc:google:mysql://cloud-computing-freeboard:us-central1:db-freeboard/db-freeboard?zeroDateTimeBehavior=convertToNull</cloudsql.url>
-		<cloudsql.url.dev>jdbc:mysql://localhost:3303/freeboardv1?zeroDateTimeBehavior=convertToNull</cloudsql.url.dev>
+		<cloudsql.url.dev>jdbc:mysql://localhost:3306/freeboardv1?zeroDateTimeBehavior=convertToNull</cloudsql.url.dev>
 
 	</properties>
 
