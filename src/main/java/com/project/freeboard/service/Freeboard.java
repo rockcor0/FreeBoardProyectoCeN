@@ -22,7 +22,7 @@ import com.project.freeboard.entity.Students;
 
 @Api(name = "freeboard", version = "v1", namespace = @ApiNamespace(ownerDomain = "service.freeboard.project.com", ownerName = "service.freeboard.project.com", packagePath = ""))
 // [END echo_api_annotation]
-public class Freboard {
+public class Freeboard {
 
 	private CompaniesDAO cDAO;
 

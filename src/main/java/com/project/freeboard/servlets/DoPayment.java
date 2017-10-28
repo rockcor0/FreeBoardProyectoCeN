@@ -19,7 +19,7 @@ import com.project.freeboard.message.SendEmailMessage;
 import com.project.freeboard.service.EpCompany;
 import com.project.freeboard.service.EpOffer;
 import com.project.freeboard.service.EpTransaction;
-import com.project.freeboard.service.Freboard;
+import com.project.freeboard.service.Freeboard;
 
 //@WebServlet(
 //	    name = "HelloAppEngine",
@@ -42,7 +42,7 @@ public class DoPayment extends HttpServlet {
 	private EpTransaction t;
 	private SendEmailMessage sem;
 	private EpOffer o;
-	private Freboard freeboard;
+	private Freeboard freeboard;
 	private EpCompany epCompany;
 
 	@Override
@@ -68,7 +68,7 @@ public class DoPayment extends HttpServlet {
 		
 		
 		System.out.println("Amount: " + amount);
-		freeboard= new Freboard();
+		freeboard= new Freeboard();
 		
 		try {
 			Companies companies= epCompany.getCompanyByName(amount);
@@ -184,7 +184,6 @@ public class DoPayment extends HttpServlet {
 			return true;
 		else
 			return false;
-
 	}
 
 	/**
