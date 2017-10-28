@@ -18,6 +18,11 @@ import com.project.freeboard.entity.Transactions;
 import com.project.freeboard.message.SendEmailMessage;
 import com.project.freeboard.service.Freboard;
 
+//@WebServlet(
+//	    name = "HelloAppEngine",
+//	    urlPatterns = {"/hello"}
+//	)
+
 /**
  * Modulo para validar y registrar pagos
  * @author Ricardo
