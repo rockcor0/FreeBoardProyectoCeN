@@ -66,7 +66,6 @@ public class DoPayment extends HttpServlet {
 		String transaction_date = req.getParameter("transaction_date");
 		String payment_method_name = req.getParameter("payment_method_name");
 		
-		
 		System.out.println("Amount: " + amount);
 		freeboard= new Freeboard();
 		
