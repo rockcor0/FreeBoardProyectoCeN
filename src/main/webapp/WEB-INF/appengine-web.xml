@@ -22,4 +22,7 @@
 	<env-variables>
 		<env-var name="ENDPOINTS_SERVICE_NAME" value="${endpoints.project.id}.appspot.com" />
 	</env-variables>
+	<resource-files>
+		<include path="**" />
+	</resource-files>
 </appengine-web-app>

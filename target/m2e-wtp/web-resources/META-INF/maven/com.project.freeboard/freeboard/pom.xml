@@ -31,7 +31,6 @@
 		<cloudsql.url.dev>jdbc:mysql://localhost:3303/freeboardv1?zeroDateTimeBehavior=convertToNull</cloudsql.url.dev>
 
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.datanucleus</groupId>
@@ -126,6 +125,22 @@
 			<artifactId>appengine-api-stubs</artifactId>
 			<version>${appengine.sdk.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.6.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-admin -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>5.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>22.0</version>
 		</dependency>
 	</dependencies>
 
@@ -230,19 +245,19 @@
 				</executions>
 			</plugin>
 			<plugin>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>exec-maven-plugin</artifactId>
-			<version>1.1</version>
-			<configuration>
-				<mainClass>org.datanucleus.samples.jpa.tutorial.Main</mainClass>
-				<systemProperties>
-					<systemProperty>
-						<key>log4j.configuration</key>
-						<value>file:${basedir}/src/main/resources/log4j.properties</value>
-					</systemProperty>
-				</systemProperties>
-			</configuration>
-		</plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<mainClass>org.datanucleus.samples.jpa.tutorial.Main</mainClass>
+					<systemProperties>
+						<systemProperty>
+							<key>log4j.configuration</key>
+							<value>file:${basedir}/src/main/resources/log4j.properties</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2.1</version>

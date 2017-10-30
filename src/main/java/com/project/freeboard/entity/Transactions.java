@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author nicolas1
  */
 @Entity
-@Table(name = "transactions", uniqueConstraints = {
+@Table(uniqueConstraints = {
     @UniqueConstraint(columnNames = {"referenceCode"})})
 @XmlRootElement
 @NamedQueries({
@@ -38,13 +38,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Transactions.findByPayHash", query = "SELECT t FROM Transactions t WHERE t.payHash = :payHash")
     , @NamedQuery(name = "Transactions.findByStatePol", query = "SELECT t FROM Transactions t WHERE t.statePol = :statePol")
     , @NamedQuery(name = "Transactions.findByResponseCodePol", query = "SELECT t FROM Transactions t WHERE t.responseCodePol = :responseCodePol")
-    , @NamedQuery(name = "Transactions.findByResponseMessageCol", query = "SELECT t FROM Transactions t WHERE t.responseMessageCol = :responseMessageCol")
+    , @NamedQuery(name = "Transactions.findByResponseMessageCol", query = "SELECT t FROM Transactions t WHERE t.responseMessagePol = :responseMessageCol")
     , @NamedQuery(name = "Transactions.findByPaymentMethodType", query = "SELECT t FROM Transactions t WHERE t.paymentMethodType = :paymentMethodType")
     , @NamedQuery(name = "Transactions.findByTransactionDate", query = "SELECT t FROM Transactions t WHERE t.transactionDate = :transactionDate")
     , @NamedQuery(name = "Transactions.findByPaymentMethodName", query = "SELECT t FROM Transactions t WHERE t.paymentMethodName = :paymentMethodName")
     , @NamedQuery(name = "Transactions.findByTransactionscol", query = "SELECT t FROM Transactions t WHERE t.transactionscol = :transactionscol")
     , @NamedQuery(name = "Transactions.findByCreated", query = "SELECT t FROM Transactions t WHERE t.created = :created")
     , @NamedQuery(name = "Transactions.findByUpdated", query = "SELECT t FROM Transactions t WHERE t.updated = :updated")})
+
+
 public class Transactions implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -82,9 +84,9 @@ public class Transactions implements Serializable {
     @Column(name = "state_pol")
     private Integer statePol;
     @Column(name = "response_code_pol", length = 255)
-    private String responseCodePol;
-    @Column(name = "response_message_col")
-    private Integer responseMessageCol;
+    private Integer responseCodePol;
+    @Column(name = "response_message_Pol")
+    private String responseMessagePol;
     @Column(name = "payment_method_type")
     private Integer paymentMethodType;
     @Column(name = "transaction_date")
@@ -214,20 +216,20 @@ public class Transactions implements Serializable {
         this.statePol = statePol;
     }
 
-    public String getResponseCodePol() {
+    public Integer getResponseCodePol() {
         return responseCodePol;
     }
 
-    public void setResponseCodePol(String responseCodePol) {
+    public void setResponseCodePol(Integer responseCodePol) {
         this.responseCodePol = responseCodePol;
     }
 
-    public Integer getResponseMessageCol() {
-        return responseMessageCol;
+    public String getResponseMessagePol() {
+        return responseMessagePol;
     }
 
-    public void setResponseMessageCol(Integer responseMessageCol) {
-        this.responseMessageCol = responseMessageCol;
+    public void setResponseMessageCol(String responseMessageCol) {
+        this.responseMessagePol = responseMessageCol;
     }
 
     public Integer getPaymentMethodType() {

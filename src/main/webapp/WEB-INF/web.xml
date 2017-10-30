@@ -9,12 +9,34 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
 	<!-- Wrap the backend with Endpoints Frameworks v2. -->
 	<servlet>
+		<servlet-name>DoPayment</servlet-name>
+		<servlet-class>com.project.freeboard.servlets.DoPayment
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DoPayment</servlet-name>
+		<url-pattern>/payment</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>loginCompany</servlet-name>
+		<servlet-class>com.project.freeboard.servlets.loginCompany
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginCompany</servlet-name>
+		<url-pattern>/logincompany</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>EndpointsServlet</servlet-name>
 		<servlet-class>com.google.api.server.spi.EndpointsServlet
 		</servlet-class>
 		<init-param>
 			<param-name>services</param-name>
-			<param-value>com.project.freeboard.service.Freeboard</param-value>
+			<param-value>com.project.freeboard.service.CompaniesEP,
+				com.project.freeboard.service.StudentsEP,
+				com.project.freeboard.service.AuctionsEP,
+				com.project.freeboard.service.OffersEP
+			</param-value>
 		</init-param>
 	</servlet>
 	<!-- Route API method requests to the backend. -->

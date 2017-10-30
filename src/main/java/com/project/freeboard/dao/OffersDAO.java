@@ -15,7 +15,7 @@ public class OffersDAO {
 	private EntityManager em;
 
 	public OffersDAO() {
-		em = PersistenceManager.get().createEntityManager();
+		em = PersistenceManager.getEntityManager();
 	}
 
 	public boolean addOffers(Offers o) {
@@ -61,7 +61,7 @@ public class OffersDAO {
 	public List<Offers> getOffers() {
 		List<Offers> Offerss = null;
 		em.getTransaction().begin();
-		TypedQuery<Offers> q = em.createNamedQuery("Offers.getAll", Offers.class);
+		TypedQuery<Offers> q = em.createNamedQuery("Offers.findAll", Offers.class);
 		try {
 			Offerss = q.getResultList();
 		} catch (NoResultException e) {

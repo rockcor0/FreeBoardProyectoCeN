@@ -17,8 +17,8 @@ public class Transactions_
     public static volatile SingularAttribute<Transactions, java.lang.String> test;
     public static volatile SingularAttribute<Transactions, java.lang.String> payHash;
     public static volatile SingularAttribute<Transactions, java.lang.Integer> statePol;
-    public static volatile SingularAttribute<Transactions, java.lang.String> responseCodePol;
-    public static volatile SingularAttribute<Transactions, java.lang.Integer> responseMessageCol;
+    public static volatile SingularAttribute<Transactions, java.lang.Integer> responseCodePol;
+    public static volatile SingularAttribute<Transactions, java.lang.String> responseMessagePol;
     public static volatile SingularAttribute<Transactions, java.lang.Integer> paymentMethodType;
     public static volatile SingularAttribute<Transactions, java.util.Date> transactionDate;
     public static volatile SingularAttribute<Transactions, java.lang.String> paymentMethodName;

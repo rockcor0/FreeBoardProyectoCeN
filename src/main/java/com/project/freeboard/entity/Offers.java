@@ -64,7 +64,7 @@ public class Offers implements Serializable {
 	private Students studentsId;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "offersIdoffers")
 	private List<Transactions> transactionsList;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "winnerOffer")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "companiesId")
 	private List<Auctions> auctionsList;
 
 	public Offers() {

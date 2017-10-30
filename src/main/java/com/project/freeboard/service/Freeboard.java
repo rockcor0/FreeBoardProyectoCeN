@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.jdo.annotations.Transactional;
 import com.google.api.server.spi.config.Api;
@@ -36,18 +38,28 @@ public class Freeboard {
 	 * API Company Entity
 	 */
 	@ApiMethod(name = "signUpCompany", path = "signUpCompany", httpMethod = ApiMethod.HttpMethod.POST)
-	public Companies signUpCompany(@Named("email") String email, @Named("name") String name, @Named("phone") String phone,
-			@Named("address") String address, @Named("password") String password,
+	public Companies signUpCompany(@Named("email") String email, @Named("name") String name,
+			@Named("phone") String phone, @Named("address") String address, @Named("password") String password,
 			@Named("contactPerson") String contactPerson) throws NotFoundException {
+		if (email != null && !email.equals("") && name != null && !name.equals("") && phone != null && !phone.equals("")
+				&& address != null && !address.equals("") && password != null && !password.equals("")
+				&& contactPerson != null && !contactPerson.equals("")) {
 
-		cDAO = new CompaniesDAO();
-		String hash = UUID.randomUUID().toString().replaceAll("-", "");
-		Date created = Calendar.getInstance().getTime();
-		Companies company = new Companies(email, name, phone, address, password, contactPerson, hash, created);
-		if (cDAO.addCompany(company)) {
-			return company;
+			String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+			Pattern emailPattern = Pattern.compile(regex);
+			boolean emailValid = emailPattern.matcher(email).matches();
+
+			cDAO = new CompaniesDAO();
+			String hash = UUID.randomUUID().toString().replaceAll("-", "");
+			Date created = Calendar.getInstance().getTime();
+			Companies company = new Companies(email, name, phone, address, password, contactPerson, hash, created);
+			if (cDAO.addCompany(company)) {
+				return company;
+			} else {
+				throw new NotFoundException("Company not added.");
+			}
 		} else {
-			throw new NotFoundException("Company not added.");
+			return null;
 		}
 	}
 
@@ -65,11 +77,15 @@ public class Freeboard {
 
 	@Transactional
 	@ApiMethod(name = "removeCompany", path = "removeCompany/{email}", httpMethod = ApiMethod.HttpMethod.DELETE)
-	public void removeCompany(@Named("email") String email) throws NotFoundException {
+	public Companies removeCompany(@Named("email") String email) throws NotFoundException {
 		cDAO = new CompaniesDAO();
-		if (!cDAO.removeCompanie(email)) {
+		Companies companies = cDAO.removeCompanie(email);
+		if (companies != null) {
+			return companies;
+		} else {
 			throw new NotFoundException("Company doesn't exist.");
 		}
+
 	}
 
 	@ApiMethod(name = "getAllCompanies", path = "companies", httpMethod = ApiMethod.HttpMethod.GET)
@@ -81,10 +97,10 @@ public class Freeboard {
 		return companies;
 	}
 
-	@ApiMethod(name = "getCompanyByNIT", path = "companiesByNIT/{nit}", httpMethod = ApiMethod.HttpMethod.GET)
-	public Companies getCompanyByNIT(@Named("nit") String nit) throws NotFoundException {
+	@ApiMethod(name = "getCompanyByEmail", path = "getCompanyByEmail/{email}", httpMethod = ApiMethod.HttpMethod.GET)
+	public Companies getCompanyByEmail(@Named("email") String email) throws NotFoundException {
 		cDAO = new CompaniesDAO();
-		Companies companies = cDAO.getCompanieById(nit);
+		Companies companies = cDAO.getCompanyByEmail(email);
 		if (companies != null) {
 			return companies;
 		} else {
@@ -103,72 +119,72 @@ public class Freeboard {
 		}
 	}
 
-	/**
-	 * API Student Entity
-	 */
-
-	// @ApiMethod(name = "addStudent", path = "addStudent", httpMethod =
-	// ApiMethod.HttpMethod.POST)
-	// public Students addStudent(@Named("cc") String cc, @Named("name") String
-	// name, @Named("email") String email,
-	// @Named("phone") String phone, @Named("bankWire") String bankWire,
-	// @Named("bank") String bank,
-	// @Named("accountType") String accountType, @Named("university") String
-	// university,
-	// @Named("career") String career, @Named("accountOwner") String titular,
-	// @Named("experience") String experiencia, @Named("skills") String skills,
-	// @Named("password") String password)
-	// throws NotFoundException {
-	//
-	// sDAO = new StudentsDAO();
-	// Students s = new Students(cc, name, email, phone, bankWire, bank,
-	// accountType, university, career, titular,
-	// experiencia, skills, password);
-	// if (sDAO.addStudent(s)) {
-	// return s;
-	// } else {
-	// throw new NotFoundException("Student not added.");
-	// }
-	// }
-
-	@ApiMethod(name = "updateStudent", path = "updateStudent", httpMethod = ApiMethod.HttpMethod.PUT)
-	public Students updateStudent(Students s) throws NotFoundException {
-		sDAO = new StudentsDAO();
-		if (sDAO.updateStudent(s)) {
-			return s;
-		} else {
-			throw new NotFoundException("Student doesn't exist.");
-		}
-	}
-
-	@Transactional
-	@ApiMethod(name = "removeStudent", path = "removeStudent/{cc}", httpMethod = ApiMethod.HttpMethod.DELETE)
-	public void removeStudent(@Named("cc") String cc) throws NotFoundException {
-		sDAO = new StudentsDAO();
-		if (!sDAO.removeStudent(cc)) {
-			throw new NotFoundException("Student doesn't exist.");
-		}
-	}
-
-	@ApiMethod(name = "getAllStudents", path = "students", httpMethod = ApiMethod.HttpMethod.GET)
-	public List<Students> getStudents() {
-
-		sDAO = new StudentsDAO();
-		List<Students> students = sDAO.getStudents();
-
-		return students;
-	}
-
-	@ApiMethod(name = "getStudentByCC", path = "students/{cc}", httpMethod = ApiMethod.HttpMethod.GET)
-	public Students getStudentByCC(@Named("cc") String cc) throws NotFoundException {
-		sDAO = new StudentsDAO();
-		Students students = sDAO.getStudentByCC(cc);
-		if (students != null) {
-			return students;
-		} else {
-			throw new NotFoundException("Student doesn't exist.");
-		}
-	}
+//	/**
+//	 * API Student Entity
+//	 */
+//
+//	 @ApiMethod(name = "addStudent", path = "addStudent", httpMethod =
+//	 ApiMethod.HttpMethod.POST)
+//	 public Students addStudent(@Named("cc") String cc, @Named("name") String
+//	 name, @Named("email") String email,
+//	 @Named("phone") String phone, @Named("bankWire") String bankWire,
+//	 @Named("bank") String bank,
+//	 @Named("accountType") String accountType, @Named("university") String
+//	 university,
+//	 @Named("career") String career, @Named("accountOwner") String titular,
+//	 @Named("experience") String experiencia, @Named("skills") String skills,
+//	 @Named("password") String password)
+//	 throws NotFoundException {
+//	
+//	 sDAO = new StudentsDAO();
+//	 Students s = new Students(cc, name, email, phone, bankWire, bank,
+//	 accountType, university, career, titular,
+//	 experiencia, skills, password);
+//	 if (sDAO.addStudent(s)) {
+//	 return s;
+//	 } else {
+//	 throw new NotFoundException("Student not added.");
+//	 }
+//	 }
+//
+//	@ApiMethod(name = "updateStudent", path = "updateStudent", httpMethod = ApiMethod.HttpMethod.PUT)
+//	public Students updateStudent(Students s) throws NotFoundException {
+//		sDAO = new StudentsDAO();
+//		if (sDAO.updateStudent(s)) {
+//			return s;
+//		} else {
+//			throw new NotFoundException("Student doesn't exist.");
+//		}
+//	}
+//
+//	@Transactional
+//	@ApiMethod(name = "removeStudent", path = "removeStudent/{cc}", httpMethod = ApiMethod.HttpMethod.DELETE)
+//	public void removeStudent(@Named("cc") String cc) throws NotFoundException {
+//		sDAO = new StudentsDAO();
+//		if (!sDAO.removeStudent(cc)) {
+//			throw new NotFoundException("Student doesn't exist.");
+//		}
+//	}
+//
+//	@ApiMethod(name = "getAllStudents", path = "students", httpMethod = ApiMethod.HttpMethod.GET)
+//	public List<Students> getStudents() {
+//
+//		sDAO = new StudentsDAO();
+//		List<Students> students = sDAO.getStudents();
+//
+//		return students;
+//	}
+//
+//	@ApiMethod(name = "getStudentByCC", path = "students/{cc}", httpMethod = ApiMethod.HttpMethod.GET)
+//	public Students getStudentByCC(@Named("cc") String cc) throws NotFoundException {
+//		sDAO = new StudentsDAO();
+//		Students students = sDAO.getStudentByCC(cc);
+//		if (students != null) {
+//			return students;
+//		} else {
+//			throw new NotFoundException("Student doesn't exist.");
+//		}
+//	}
 
 	/**
 	 * API Auction Entity

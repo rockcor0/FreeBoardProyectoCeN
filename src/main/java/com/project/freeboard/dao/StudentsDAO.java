@@ -15,15 +15,13 @@ public class StudentsDAO {
 	private EntityManager em;
 
 	public StudentsDAO() {
-		em = PersistenceManager.get().createEntityManager();
+		em = PersistenceManager.getEntityManager();
 	}
 
 	public boolean addStudent(Students s) {
-		// Check for already exists
 		try {
 			em.getTransaction().begin();
 			em.persist(s);
-			em.flush();
 			em.getTransaction().commit();
 			return true;
 		} catch (Exception ex) {
@@ -35,51 +33,41 @@ public class StudentsDAO {
 	public boolean updateStudent(Students s) {
 		try {
 			em.getTransaction().begin();
-			em.merge(s); // cascades the tool & skill relationships
-			em.flush();
+			em.merge(s);
 			em.getTransaction().commit();
-			em.close();
 			return true;
 		} catch (Exception ex) {
 			return false;
 		}
 	}
 
-	public boolean removeStudent(String id) {
+	public Students removeStudent(String id) {
+		Students s = null;
 		try {
-			Students student = em.find(Students.class, id);
+			s = em.find(Students.class, id);
 			em.getTransaction().begin();
-			em.remove(student);
-			em.flush();
+			em.remove(s);
 			em.getTransaction().commit();
-			return true;
+			return s;
 		} catch (Exception e) {
-			em.close();
-			return false;
+			return s;
 		}
 	}
 
 	public List<Students> getStudents() {
 		List<Students> students = null;
-		em.getTransaction().begin();
 		TypedQuery<Students> q = em.createNamedQuery("Students.getAll", Students.class);
 		try {
 			students = q.getResultList();
 		} catch (NoResultException e) {
 			students = new ArrayList<Students>();
 		}
-
-		em.flush();
-		em.getTransaction().commit();
 		return students;
 	}
 
-	public Students getStudentByCC(String cc) {
+	public Students getStudentByEmail(String email) {
 
-		em.getTransaction().begin();
-		Students student = em.find(Students.class, cc);
-		em.flush();
-		em.getTransaction().commit();
+		Students student = em.find(Students.class, email);
 		return student;
 	}
 

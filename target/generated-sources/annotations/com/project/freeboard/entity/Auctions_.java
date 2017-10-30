@@ -6,7 +6,11 @@ import javax.persistence.metamodel.*;
 public class Auctions_
 {
     public static volatile SingularAttribute<Auctions, Long> serialVersionUID;
+    public static volatile SingularAttribute<Auctions, java.lang.String> ACCEPTED;
+    public static volatile SingularAttribute<Auctions, java.lang.String> PENDING;
+    public static volatile SingularAttribute<Auctions, java.lang.String> DENIED;
     public static volatile SingularAttribute<Auctions, java.lang.String> idauctions;
+    public static volatile SingularAttribute<Auctions, java.lang.String> name;
     public static volatile SingularAttribute<Auctions, java.lang.String> type;
     public static volatile SingularAttribute<Auctions, java.lang.String> size;
     public static volatile SingularAttribute<Auctions, java.lang.String> mainColor;

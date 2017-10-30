@@ -18,6 +18,8 @@ import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.appengine.repackaged.org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  *
  * @author nicolas1
@@ -38,34 +40,47 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Companies implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Basic(optional = false)
 	@Column(nullable = false, length = 45)
 	private String email;
+
 	@Basic(optional = false)
 	@Column(nullable = false, length = 45)
 	private String name;
+
 	@Basic(optional = false)
 	@Column(nullable = false, length = 45)
 	private String phone;
+
 	@Basic(optional = false)
 	@Column(nullable = false, length = 45)
 	private String address;
+
 	@Basic(optional = false)
 	@Column(nullable = false, length = 45)
+	@JsonIgnore
 	private String password;
+
 	@Basic(optional = false)
 	@Column(nullable = false, length = 45)
 	private String contactPerson;
+
 	@Basic(optional = false)
 	@Column(nullable = false, length = 32)
 	private String hash;
+
 	@Basic(optional = false)
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
+
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(updatable = false)
 	private Date updated;
+
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "companiesId")
 	private List<Auctions> auctionsList;
 
@@ -86,6 +101,16 @@ public class Companies implements Serializable {
 		this.contactPerson = contactPerson;
 		this.hash = hash;
 		this.created = created;
+	}
+
+	public Companies(String email2, String name2, String phone2, String address2, String password2,
+			String contactPerson2) {
+		this.email = email2;
+		this.name = name2;
+		this.phone = phone2;
+		this.address = address2;
+		this.password = password2;
+		this.contactPerson = contactPerson2;
 	}
 
 	public String getEmail() {

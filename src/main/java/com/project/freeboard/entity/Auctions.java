@@ -1,6 +1,5 @@
 package com.project.freeboard.entity;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,222 +27,253 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author nicolas1
  */
 @Entity
-@Table(name = "auctions" , uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"idauctions"})})
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "idauctions" }) })
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Auctions.findAll", query = "SELECT a FROM Auctions a")
-    , @NamedQuery(name = "Auctions.findByIdauctions", query = "SELECT a FROM Auctions a WHERE a.idauctions = :idauctions")
-    , @NamedQuery(name = "Auctions.findByType", query = "SELECT a FROM Auctions a WHERE a.type = :type")
-    , @NamedQuery(name = "Auctions.findBySize", query = "SELECT a FROM Auctions a WHERE a.size = :size")
-    , @NamedQuery(name = "Auctions.findByMainColor", query = "SELECT a FROM Auctions a WHERE a.mainColor = :mainColor")
-    , @NamedQuery(name = "Auctions.findBySecundaryColor", query = "SELECT a FROM Auctions a WHERE a.secundaryColor = :secundaryColor")
-    , @NamedQuery(name = "Auctions.findByDescription", query = "SELECT a FROM Auctions a WHERE a.description = :description")
-    , @NamedQuery(name = "Auctions.findByTime", query = "SELECT a FROM Auctions a WHERE a.time = :time")
-    , @NamedQuery(name = "Auctions.findByPrice", query = "SELECT a FROM Auctions a WHERE a.price = :price")
-    , @NamedQuery(name = "Auctions.findByCreated", query = "SELECT a FROM Auctions a WHERE a.created = :created")
-    , @NamedQuery(name = "Auctions.findByUpdated", query = "SELECT a FROM Auctions a WHERE a.updated = :updated")})
+@NamedQueries({ @NamedQuery(name = "Auctions.findAll", query = "SELECT a FROM Auctions a"),
+		@NamedQuery(name = "Auctions.findByIdauctions", query = "SELECT a FROM Auctions a WHERE a.idauctions = :idauctions"),
+		@NamedQuery(name = "Auctions.findByType", query = "SELECT a FROM Auctions a WHERE a.type = :type"),
+		@NamedQuery(name = "Auctions.findByName", query = "SELECT a FROM Auctions a WHERE a.name = :name"),
+		@NamedQuery(name = "Auctions.findBySize", query = "SELECT a FROM Auctions a WHERE a.size = :size"),
+		@NamedQuery(name = "Auctions.findByMainColor", query = "SELECT a FROM Auctions a WHERE a.mainColor = :mainColor"),
+		@NamedQuery(name = "Auctions.findBySecundaryColor", query = "SELECT a FROM Auctions a WHERE a.secundaryColor = :secundaryColor"),
+		@NamedQuery(name = "Auctions.findByDescription", query = "SELECT a FROM Auctions a WHERE a.description = :description"),
+		@NamedQuery(name = "Auctions.findByTime", query = "SELECT a FROM Auctions a WHERE a.time = :time"),
+		@NamedQuery(name = "Auctions.findByPrice", query = "SELECT a FROM Auctions a WHERE a.price = :price"),
+		@NamedQuery(name = "Auctions.findByCreated", query = "SELECT a FROM Auctions a WHERE a.created = :created"),
+		@NamedQuery(name = "Auctions.findByUpdated", query = "SELECT a FROM Auctions a WHERE a.updated = :updated") })
 public class Auctions implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(nullable = false, length = 32)
-    private String idauctions;
-    @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String type;
-    @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String size;
-    @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String mainColor;
-    @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String secundaryColor;
-    @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String description;
-    @Basic(optional = false)
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date time;
-    @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String price;
-    @Lob
-    private byte[] sketch;
-    @Basic(optional = false)
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updated;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "auctionsIdauctions")
-    private List<Offers> offersList;
-    @JoinColumn(name = "companies_id", referencedColumnName = "email", nullable = false)
-    @ManyToOne(optional = false)
-    private Companies companiesId;
-    @JoinColumn(name = "winnerOffer", referencedColumnName = "idoffers", nullable = false)
-    @ManyToOne(optional = false)
-    private Offers winnerOffer;
+	private static final long serialVersionUID = 1L;
 
-    public Auctions() {
-    }
+	public final static String ACCEPTED = "accepted";
+	public final static String PENDING = "pending";
+	public final static String DENIED = "denied";
 
-    public Auctions(String idauctions) {
-        this.idauctions = idauctions;
-    }
+	@Id
+	@Basic(optional = false)
+	@Column(nullable = false, length = 32)
+	private String idauctions;
 
-    public Auctions(String idauctions, String type, String size, String mainColor, String secundaryColor, String description, Date time, String price, Date created) {
-        this.idauctions = idauctions;
-        this.type = type;
-        this.size = size;
-        this.mainColor = mainColor;
-        this.secundaryColor = secundaryColor;
-        this.description = description;
-        this.time = time;
-        this.price = price;
-        this.created = created;
-    }
+	@Basic(optional = false)
+	@Column(nullable = false, length = 255)
+	private String name;
 
-    public String getIdauctions() {
-        return idauctions;
-    }
+	@Basic(optional = false)
+	@Column(nullable = false, length = 45)
+	private String type;
+	@Basic(optional = false)
+	@Column(nullable = false, length = 45)
+	private String size;
+	@Basic(optional = false)
+	@Column(nullable = false, length = 45)
+	private String mainColor;
+	@Basic(optional = false)
+	@Column(nullable = false, length = 45)
+	private String secundaryColor;
+	@Basic(optional = false)
+	@Column(nullable = false, length = 45)
+	private String description;
+	@Basic(optional = false)
+	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date time;
+	@Basic(optional = false)
+	@Column(nullable = false, length = 45)
+	private String price;
+	@Lob
+	private byte[] sketch;
+	@Basic(optional = false)
+	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "auctionsIdauctions")
+	private List<Offers> offersList;
+	@JoinColumn(name = "companies_id", referencedColumnName = "email", nullable = false)
+	@ManyToOne(optional = false)
+	private Companies companiesId;
+	@JoinColumn(name = "winnerOffer", referencedColumnName = "idoffers", nullable = true)
+	@OneToOne(optional = false)
+	private Offers winnerOffer;
 
-    public void setIdauctions(String idauctions) {
-        this.idauctions = idauctions;
-    }
+	public Auctions() {
+	}
 
-    public String getType() {
-        return type;
-    }
+	public Auctions(String idauctions) {
+		this.idauctions = idauctions;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public Auctions(String idauctions, String name, String type, String size, String mainColor, String secundaryColor,
+			String description, Date time, String price, Date created) {
+		this.idauctions = idauctions;
+		this.name = name;
+		this.type = type;
+		this.size = size;
+		this.mainColor = mainColor;
+		this.secundaryColor = secundaryColor;
+		this.description = description;
+		this.time = time;
+		this.price = price;
+		this.created = created;
+	}
 
-    public String getSize() {
-        return size;
-    }
+	public String getIdauctions() {
+		return idauctions;
+	}
 
-    public void setSize(String size) {
-        this.size = size;
-    }
+	public void setIdauctions(String idauctions) {
+		this.idauctions = idauctions;
+	}
 
-    public String getMainColor() {
-        return mainColor;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setMainColor(String mainColor) {
-        this.mainColor = mainColor;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public String getSecundaryColor() {
-        return secundaryColor;
-    }
+	public String getSize() {
+		return size;
+	}
 
-    public void setSecundaryColor(String secundaryColor) {
-        this.secundaryColor = secundaryColor;
-    }
+	public void setSize(String size) {
+		this.size = size;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getMainColor() {
+		return mainColor;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setMainColor(String mainColor) {
+		this.mainColor = mainColor;
+	}
 
-    public Date getTime() {
-        return time;
-    }
+	public String getSecundaryColor() {
+		return secundaryColor;
+	}
 
-    public void setTime(Date time) {
-        this.time = time;
-    }
+	public void setSecundaryColor(String secundaryColor) {
+		this.secundaryColor = secundaryColor;
+	}
 
-    public String getPrice() {
-        return price;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public byte[] getSketch() {
-        return sketch;
-    }
+	public Date getTime() {
+		return time;
+	}
 
-    public void setSketch(byte[] sketch) {
-        this.sketch = sketch;
-    }
+	public void setTime(Date time) {
+		this.time = time;
+	}
 
-    public Date getCreated() {
-        return created;
-    }
+	public String getPrice() {
+		return price;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setPrice(String price) {
+		this.price = price;
+	}
 
-    public Date getUpdated() {
-        return updated;
-    }
+	public byte[] getSketch() {
+		return sketch;
+	}
 
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
+	public void setSketch(byte[] sketch) {
+		this.sketch = sketch;
+	}
 
-    @XmlTransient
-    public List<Offers> getOffersList() {
-        return offersList;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setOffersList(List<Offers> offersList) {
-        this.offersList = offersList;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    public Companies getCompaniesId() {
-        return companiesId;
-    }
+	public Date getUpdated() {
+		return updated;
+	}
 
-    public void setCompaniesId(Companies companiesId) {
-        this.companiesId = companiesId;
-    }
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
 
-    public Offers getWinnerOffer() {
-        return winnerOffer;
-    }
+	@XmlTransient
+	public List<Offers> getOffersList() {
+		return offersList;
+	}
 
-    public void setWinnerOffer(Offers winnerOffer) {
-        this.winnerOffer = winnerOffer;
-    }
+	public void setOffersList(List<Offers> offersList) {
+		this.offersList = offersList;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idauctions != null ? idauctions.hashCode() : 0);
-        return hash;
-    }
+	public Companies getCompaniesId() {
+		return companiesId;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Auctions)) {
-            return false;
-        }
-        Auctions other = (Auctions) object;
-        if ((this.idauctions == null && other.idauctions != null) || (this.idauctions != null && !this.idauctions.equals(other.idauctions))) {
-            return false;
-        }
-        return true;
-    }
+	public void setCompaniesId(Companies companiesId) {
+		this.companiesId = companiesId;
+	}
 
-    @Override
-    public String toString() {
-        return "beansexample.Auctions[ idauctions=" + idauctions + " ]";
-    }
-    
+	public Offers getWinnerOffer() {
+		return winnerOffer;
+	}
+
+	public void setWinnerOffer(Offers winnerOffer) {
+		this.winnerOffer = winnerOffer;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (idauctions != null ? idauctions.hashCode() : 0);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		// TODO: Warning - this method won't work in the case the id fields are
+		// not set
+		if (!(object instanceof Auctions)) {
+			return false;
+		}
+		Auctions other = (Auctions) object;
+		if ((this.idauctions == null && other.idauctions != null)
+				|| (this.idauctions != null && !this.idauctions.equals(other.idauctions))) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "beansexample.Auctions[ idauctions=" + idauctions + " ]";
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Offers closeAuction() {
+
+		for (int i = 0; i < offersList.size(); i++) {
+			if (!offersList.get(i).getState().equals(ACCEPTED)) {
+				offersList.get(i).setState(DENIED);
+			}
+		}
+		return winnerOffer;
+	}
+
 }
